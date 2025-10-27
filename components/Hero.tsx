@@ -43,7 +43,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="space-y-12 text-center"
+          className="space-y-12 flex flex-col items-center"
         >
           {/* Greeting Badge */}
           <motion.div
@@ -58,7 +58,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Main Heading */}
-          <div className="space-y-4">
+          <div className="space-y-4 text-center">
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold">
               <span className="block text-gray-100">Hi, I'm</span>
               <span className="block gradient-text">Abdul Aziz</span>
@@ -66,7 +66,7 @@ export default function Hero() {
 
             {/* Animated Role Text */}
             {typingText && (
-              <div className="h-12 md:h-16">
+              <div className="h-12 md:h-16 flex justify-center">
                 <span className="text-3xl md:text-5xl font-semibold text-gray-100">
                   {typingText}
                   <span className="animate-pulse">|</span>
@@ -80,9 +80,9 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto text-center"
+            className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto justify-center"
           >
-            Building intelligent systems for automation, analytics, and real-world impact.
+                                             Building intelligent systems for automation, analytics, and real-world impact.
           </motion.p>
 
           {/* Buttons */}
