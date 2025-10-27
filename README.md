@@ -2,6 +2,8 @@
 
 A next-gen, cinematic portfolio website built with Next.js, featuring AI/ML expertise and full-stack development skills.
 
+**🚀 Live Demo**: [https://portfolio-beta-gold-49.vercel.app/](https://portfolio-beta-gold-49.vercel.app/)
+
 ![Portfolio Preview](https://via.placeholder.com/1200x600/0B0F1A/06b6d4?text=Abdul+Aziz+Portfolio)
 
 ## ✨ Features

@@ -65,12 +65,14 @@ export default function Hero() {
             </h1>
 
             {/* Animated Role Text */}
-            <div className="h-12 md:h-16">
-              <span className="text-3xl md:text-5xl font-semibold text-gray-100">
-                {typingText}
-                <span className="animate-pulse">|</span>
-              </span>
-            </div>
+            {typingText && (
+              <div className="h-12 md:h-16">
+                <span className="text-3xl md:text-5xl font-semibold text-gray-100">
+                  {typingText}
+                  <span className="animate-pulse">|</span>
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Description */}
