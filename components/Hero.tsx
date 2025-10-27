@@ -80,9 +80,9 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto justify-center"
+            className="text-xl md:text-2xl text-gray-400 max-w-3xl text-center"
           >
-                                             Building intelligent systems for automation, analytics, and real-world impact.
+            Building intelligent systems for automation, analytics, and real-world impact.
           </motion.p>
 
           {/* Buttons */}
