@@ -38,7 +38,7 @@ export default function Hero() {
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <ParticleBackground />
       
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 relative z-10 w-full">
+      <div className="w-full max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
