@@ -1,32 +1,54 @@
 import type { Metadata } from "next";
-import { Sora, Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CursorGlow from "@/components/CursorGlow";
-import ScrollProgress from "@/components/ScrollProgress";
-
-const sora = Sora({
-  subsets: ["latin"],
-  variable: "--font-sora",
-  weight: ["300", "400", "500", "600", "700", "800"],
-});
+import HashScroll from "@/components/HashScroll";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
 });
 
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono-jb",
+  weight: ["400", "500"],
+  display: "swap",
+});
+
+const title = "Abdul Aziz — AI Engineer";
+const description =
+  "AI Engineer building production LLM systems: RAG, multi-model orchestration, and the content-safety layers that make them shippable. Five platforms shipped in twelve months.";
+
 export const metadata: Metadata = {
-  title: "Abdul Aziz - AI Engineer & Full Stack Developer",
-  description: "Computer Science graduate specializing in AI, ML, and Full Stack Development. Building intelligent systems for automation, analytics, and real-world impact.",
-  keywords: ["AI Engineer", "Full Stack Developer", "Machine Learning", "Computer Vision", "Chatbots", "Lahore, Pakistan"],
+  metadataBase: new URL("https://abdulaziz.dev"),
+  title,
+  description,
+  keywords: [
+    "AI Engineer",
+    "LLM",
+    "RAG",
+    "Machine Learning",
+    "Computer Vision",
+    "Next.js",
+    "Lahore",
+    "Pakistan",
+  ],
   authors: [{ name: "Abdul Aziz" }],
   openGraph: {
-    title: "Abdul Aziz - AI Engineer & Full Stack Developer",
-    description: "Computer Science graduate specializing in AI, ML, and Full Stack Development",
+    title,
+    description,
     type: "website",
+    locale: "en_US",
   },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
@@ -35,10 +57,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${sora.variable} ${inter.variable} antialiased`}>
-        <CursorGlow />
-        <ScrollProgress />
+    <html lang="en">
+      <body className={`${inter.variable} ${jetbrains.variable} antialiased`}>
+        {/* Skip link — first tab stop for keyboard and screen-reader users */}
+        <a
+          href="#work"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-fg focus:px-4 focus:py-2 focus:text-sm focus:text-bg"
+        >
+          Skip to content
+        </a>
+        <HashScroll />
         <Navbar />
         {children}
         <Footer />
