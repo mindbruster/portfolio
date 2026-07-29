@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { nav, profile } from "@/lib/content";
 
 export default function Navbar() {
@@ -21,22 +22,24 @@ export default function Navbar() {
       }`}
     >
       <nav className="container-page flex h-16 items-center justify-between">
-        <a
-          href="#home"
+        {/* Routes to "/" rather than "#home" so it works from a case-study page,
+            where a bare hash would resolve against the current URL and do nothing. */}
+        <Link
+          href="/"
           className="font-mono text-sm text-fg transition-colors hover:text-accent"
         >
           abdul-aziz
-        </a>
+        </Link>
 
         <ul className="hidden items-center gap-8 sm:flex">
           {nav.map((item) => (
             <li key={item.href}>
-              <a
+              <Link
                 href={item.href}
                 className="text-sm text-muted transition-colors hover:text-fg"
               >
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
           <li>
@@ -66,13 +69,13 @@ export default function Navbar() {
           <ul className="container-page flex flex-col py-4">
             {nav.map((item) => (
               <li key={item.href}>
-                <a
+                <Link
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className="block py-2 text-sm text-muted transition-colors hover:text-fg"
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
             <li>

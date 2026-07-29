@@ -32,7 +32,7 @@ export default async function CaseStudy({ params }: Params) {
   const { study } = project;
 
   return (
-    <main className="pt-32 pb-24">
+    <main id="main" className="pt-32 pb-24">
       <article className="container-page">
         <Link
           href="/#work"
@@ -86,6 +86,26 @@ export default async function CaseStudy({ params }: Params) {
               <figcaption className="mt-3 font-mono text-[11px] text-subtle">
                 {project.hrefLabel}
               </figcaption>
+
+              {/* Additional frames, if this project has them */}
+              {project.gallery && (
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  {project.gallery.map((g) => (
+                    <div
+                      key={g.src}
+                      className="overflow-hidden rounded-lg border border-line"
+                    >
+                      <Image
+                        src={g.src}
+                        alt={g.alt}
+                        width={g.w}
+                        height={g.h}
+                        className="w-full"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </figure>
           </Reveal>
         )}
