@@ -55,6 +55,8 @@ export type Project = {
    *  w/h are the file's true intrinsic size so next/image reserves the
    *  correct aspect box and nothing is squashed. */
   shot?: { src: string; alt: string; w: number; h: number };
+  /** Additional frames, shown as a grid on the case-study page. */
+  gallery?: { src: string; alt: string; w: number; h: number }[];
   /** Case-study depth, rendered at /work/[slug]. */
   study?: {
     role: string;
@@ -350,6 +352,26 @@ export const projects: Project[] = [
   },
   {
     slug: "litter-detection",
+    shot: {
+      src: "/shots/litter-detection-1.jpg",
+      alt: "Live detection output: a rickshaw boxed as VEHICLE, a car boxed as LITTERING CAR, the discarded item tagged LITTER ID 0, and the number plate located by ANPR. Plates and faces are blurred.",
+      w: 1920,
+      h: 1080,
+    },
+    gallery: [
+      {
+        src: "/shots/litter-detection-2.jpg",
+        alt: "The same offending vehicle tracked as it crosses the trigger line, with the discarded item still tagged.",
+        w: 1920,
+        h: 1080,
+      },
+      {
+        src: "/shots/litter-detection-3.jpg",
+        alt: "Overhead angle: the arm is visible mid-throw, the litter is tagged, and the plate is located on the tracked vehicle.",
+        w: 1920,
+        h: 1080,
+      },
+    ],
     name: "Litter Detection",
     tagline: "Computer vision for Punjab Safe Cities Authority",
     year: "2024 — 2025",
@@ -520,12 +542,12 @@ export const education = {
 };
 
 export const nav = [
-  { href: "#about", label: "About" },
-  { href: "#work", label: "Work" },
-  { href: "#approach", label: "Approach" },
-  { href: "#experience", label: "Experience" },
-  { href: "#notes", label: "Notes" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#about", label: "About" },
+  { href: "/#work", label: "Work" },
+  { href: "/#approach", label: "Approach" },
+  { href: "/#experience", label: "Experience" },
+  { href: "/#notes", label: "Notes" },
+  { href: "/#contact", label: "Contact" },
 ] as const;
 
 export type Note = { title: string; blurb: string; tag: string };
