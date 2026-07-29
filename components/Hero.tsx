@@ -1,151 +1,98 @@
-"use client";
+import { ArrowUpRight, ArrowDown } from "lucide-react";
+import { profile, stats, projects } from "@/lib/content";
 
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Linkedin, Github, Mail, Download } from "lucide-react";
-import ParticleBackground from "./ParticleBackground";
+const live = projects.filter((p) => p.href);
 
+/**
+ * Server component. The entrance animation is pure CSS so it begins at first
+ * paint — no hydration gate, and therefore no blank flash on load.
+ */
 export default function Hero() {
-  const [typingText, setTypingText] = useState("");
-  const roles = ["AI Engineer.", "Full-Stack Developer.", "Innovator.", "Problem Solver."];
-  const [roleIndex, setRoleIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    const currentRole = roles[roleIndex];
-
-    if (!isDeleting && charIndex < currentRole.length) {
-      setTimeout(() => {
-        setTypingText(currentRole.substring(0, charIndex + 1));
-        setCharIndex(charIndex + 1);
-      }, 150);
-    } else if (isDeleting && charIndex > 0) {
-      setTimeout(() => {
-        setTypingText(currentRole.substring(0, charIndex - 1));
-        setCharIndex(charIndex - 1);
-      }, 100);
-    } else if (charIndex === currentRole.length) {
-      setTimeout(() => setIsDeleting(true), 2000);
-    } else if (charIndex === 0 && isDeleting) {
-      setIsDeleting(false);
-      setRoleIndex((prev) => (prev + 1) % roles.length);
-    }
-  }, [charIndex, isDeleting, roleIndex]);
-
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <ParticleBackground />
-      
-      <div className="w-full max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="space-y-12 flex flex-col items-center"
-        >
-          {/* Greeting Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="inline-block px-6 py-3 glass rounded-full neon-glow"
-          >
-            <span className="text-primary-400 text-sm font-medium">
-              👋 Welcome to my Portfolio
-            </span>
-          </motion.div>
-
-          {/* Main Heading */}
-          <div className="space-y-4 text-center">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold">
-              <span className="block text-gray-100">Hi, I'm</span>
-              <span className="block gradient-text">Abdul Aziz</span>
-            </h1>
-
-            {/* Animated Role Text */}
-            {typingText && (
-              <div className="h-12 md:h-16 flex justify-center">
-                <span className="text-3xl md:text-5xl font-semibold text-gray-100">
-                  {typingText}
-                  <span className="animate-pulse">|</span>
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="text-xl md:text-2xl text-gray-400 max-w-3xl text-center"
-          >
-            Building intelligent systems for automation, analytics, and real-world impact.
-          </motion.p>
-
-          {/* Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-            className="flex flex-wrap gap-5 justify-center items-center"
-          >
-            <Link
-              href="#projects"
-              className="px-10 py-4 bg-neon-gradient rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-primary-500/50 transition-all transform hover:scale-105 inline-flex items-center justify-center gap-2"
-            >
-              View Projects
-            </Link>
-            <Link
-              href="/resume.pdf"
-              download
-              className="px-10 py-4 border-2 border-primary-500 text-primary-400 rounded-lg font-semibold hover:bg-primary-500/10 transition-all transform hover:scale-105 inline-flex items-center justify-center gap-2 glass"
-            >
-              <Download className="w-5 h-5" />
-              Download Resume
-            </Link>
-            <Link
-              href="#contact"
-              className="px-10 py-4 border-2 border-accent-500 text-accent-400 rounded-lg font-semibold hover:bg-accent-500/10 transition-all transform hover:scale-105 glass inline-flex items-center justify-center"
-            >
-              Contact Me
-            </Link>
-          </motion.div>
-
-          {/* Social Icons */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.8 }}
-            className="flex items-center justify-center gap-8"
-          >
-            <a
-              href="https://www.linkedin.com/in/abdul-aziz-a6670a249/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-14 h-14 glass border border-gray-700 rounded-full hover:border-primary-500 hover:text-primary-400 transition-all transform hover:scale-110 flex items-center justify-center neon-glow"
-            >
-              <Linkedin className="w-6 h-6" />
-            </a>
-            <a
-              href="https://github.com/mindbruster"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-14 h-14 glass border border-gray-700 rounded-full hover:border-primary-500 hover:text-primary-400 transition-all transform hover:scale-110 flex items-center justify-center neon-glow"
-            >
-              <Github className="w-6 h-6" />
-            </a>
-            <a
-              href="mailto:mughalabdulaziz4@gmail.com"
-              className="w-14 h-14 glass border border-gray-700 rounded-full hover:border-primary-500 hover:text-primary-400 transition-all transform hover:scale-110 flex items-center justify-center neon-glow"
-            >
-              <Mail className="w-6 h-6" />
-            </a>
-          </motion.div>
-        </motion.div>
+    <section id="home" className="relative flex min-h-[92vh] items-center pt-28">
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -left-40 -top-40 h-[34rem] w-[34rem] rounded-full bg-accent/[0.07] blur-[120px]" />
       </div>
+
+      <div className="container-page relative">
+        <p className="eyebrow fade-up">
+          {profile.role} — {profile.location}
+        </p>
+
+        <h1
+          className="fade-up mt-6 text-5xl font-semibold leading-[0.95] tracking-[var(--tracking-display)] sm:text-7xl lg:text-8xl"
+          style={{ animationDelay: "60ms" }}
+        >
+          {profile.name}
+        </h1>
+
+        <p
+          className="fade-up mt-8 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl"
+          style={{ animationDelay: "120ms" }}
+        >
+          {profile.headline}
+        </p>
+
+        <div className="fade-up mt-10" style={{ animationDelay: "180ms" }}>
+          <p className="eyebrow">Live</p>
+          <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-3">
+            {live.map((p) => (
+              <li key={p.slug}>
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-underline font-mono text-sm"
+                >
+                  {p.hrefLabel}
+                  <ArrowUpRight className="size-3.5" aria-hidden />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div
+          className="fade-up mt-12 flex flex-wrap items-center gap-4"
+          style={{ animationDelay: "240ms" }}
+        >
+          <a
+            href="#work"
+            className="rounded-md bg-fg px-6 py-3 text-sm font-medium text-bg transition-opacity hover:opacity-85"
+          >
+            See the work
+          </a>
+          <a
+            href={profile.resume}
+            download
+            className="rounded-md border border-line px-6 py-3 text-sm font-medium text-fg transition-colors hover:border-accent hover:text-accent"
+          >
+            Download CV
+          </a>
+        </div>
+
+        <dl
+          className="fade-up mt-20 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-10 lg:grid-cols-4"
+          style={{ animationDelay: "300ms" }}
+        >
+          {stats.map((s) => (
+            <div key={s.label}>
+              <dt className="text-3xl font-semibold tracking-tight sm:text-4xl">
+                {s.value}
+              </dt>
+              <dd className="mt-2 text-sm leading-snug text-subtle">{s.label}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <a
+        href="#about"
+        aria-label="Scroll to about"
+        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 text-subtle transition-colors hover:text-accent lg:block"
+      >
+        <ArrowDown className="size-5 animate-bounce" aria-hidden />
+      </a>
     </section>
   );
 }
