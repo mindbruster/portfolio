@@ -47,7 +47,7 @@ export default async function CaseStudy({ params }: Params) {
           <h1 className="mt-4 text-4xl font-semibold tracking-[var(--tracking-display)] sm:text-6xl">
             {project.name}
           </h1>
-          <p className="mt-4 text-lg text-muted">{project.tagline}</p>
+          <p className="mt-4 text-xl text-muted">{project.tagline}</p>
 
           {project.href && (
             <a
@@ -62,10 +62,10 @@ export default async function CaseStudy({ params }: Params) {
           )}
 
           <dl className="mt-10 grid gap-6 sm:grid-cols-[10rem_1fr]">
-            <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-subtle">
+            <dt className="font-mono text-[12.5px] uppercase tracking-[0.14em] text-subtle">
               My role
             </dt>
-            <dd className="text-sm text-muted">{study.role}</dd>
+            <dd className="text-base text-muted">{study.role}</dd>
           </dl>
         </header>
 
@@ -83,7 +83,7 @@ export default async function CaseStudy({ params }: Params) {
                   priority
                 />
               </div>
-              <figcaption className="mt-3 font-mono text-[11px] text-subtle">
+              <figcaption className="mt-3 font-mono text-[12.5px] text-subtle">
                 {project.hrefLabel}
               </figcaption>
 
@@ -150,13 +150,13 @@ export default async function CaseStudy({ params }: Params) {
             <div className="mt-8 grid gap-x-16 gap-y-10 lg:grid-cols-2">
               {study.decisions.map((d, i) => (
                 <div key={d.title}>
-                  <span className="font-mono text-[11px] text-accent">
+                  <span className="font-mono text-[12.5px] text-accent">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-2 text-lg font-medium tracking-tight">
+                  <h3 className="mt-2 text-xl font-medium tracking-tight">
                     {d.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted">
+                  <p className="mt-3 text-base leading-relaxed text-muted">
                     {d.body}
                   </p>
                 </div>

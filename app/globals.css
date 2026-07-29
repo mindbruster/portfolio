@@ -2,17 +2,20 @@
 
 /* ---------------------------------------------------------------
    Design tokens (Tailwind v4 — configured here, not in a JS config)
-   Near-black canvas, warm off-white text, one accent used sparingly.
-   No decorative gradients, no glow, no glass.
+   Near-black canvas, warm off-white text. A prominent warm gradient in the
+   hero; everything below it stays restrained so the hero carries the colour.
    --------------------------------------------------------------- */
 @theme {
   --color-bg: #0a0a0b;
   --color-raised: #121214;
-  --color-fg: #ededef;
-  --color-muted: #9a9aa2;
-  --color-subtle: #6b6b74;
-  --color-line: rgba(255, 255, 255, 0.08);
+  --color-fg: #f2f2f4;
+  /* Lifted for legibility: the previous values sat below WCAG AA on this
+     background (muted ~5.9:1, subtle ~3.5:1). Now ~10:1 and ~6.4:1. */
+  --color-muted: #b8b8c2;
+  --color-subtle: #92929e;
+  --color-line: rgba(255, 255, 255, 0.10);
   --color-accent: #ff5c35;
+  --color-accent-warm: #ffa03d;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono-jb), ui-monospace, SFMono-Regular, monospace;
@@ -32,9 +35,19 @@
   body {
     background-color: var(--color-bg);
     color: var(--color-fg);
+    /* Bumped from the browser default — 14px body copy was too small to scan
+       comfortably, and everything below inherits from here. */
+    font-size: 17px;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+  }
+
+  @media (min-width: 640px) {
+    body {
+      font-size: 18px;
+    }
   }
 
   ::selection {
@@ -65,6 +78,58 @@
 }
 
 @layer utilities {
+  /* Hero atmosphere: three offset radial washes that overlap into a single
+     warm field. Layered rather than one blob so the falloff is uneven and
+     reads as light, not as a circle sitting on the page. */
+  .hero-glow {
+    background:
+      radial-gradient(
+        54rem 40rem at 4% 4%,
+        color-mix(in srgb, var(--color-accent) 78%, transparent) 0%,
+        color-mix(in srgb, var(--color-accent) 26%, transparent) 42%,
+        transparent 72%
+      ),
+      radial-gradient(
+        46rem 34rem at 92% 10%,
+        color-mix(in srgb, var(--color-accent-warm) 58%, transparent) 0%,
+        color-mix(in srgb, var(--color-accent-warm) 16%, transparent) 44%,
+        transparent 74%
+      ),
+      radial-gradient(
+        66rem 48rem at 46% 52%,
+        color-mix(in srgb, var(--color-accent) 26%, transparent) 0%,
+        transparent 68%
+      );
+    /* Full strength — intensity is controlled by the colour stops above, so
+       the falloff stays smooth instead of being flattened by a global alpha. */
+    opacity: 1;
+  }
+
+  /* Fades the wash out before the next section so the seam is invisible */
+  .hero-fade {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 68%,
+      var(--color-bg) 98%
+    );
+  }
+
+  /* Warm gradient across display type */
+  .text-gradient {
+    background: linear-gradient(
+      104deg,
+      var(--color-fg) 6%,
+      var(--color-accent-warm) 48%,
+      var(--color-accent) 92%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    /* Keeps descenders from being clipped by the text-clip box */
+    padding-bottom: 0.08em;
+  }
+
   /* Above-the-fold entrance. CSS-driven so it starts at first paint rather
      than waiting for hydration — no blank flash before text appears. */
   @keyframes fade-up {
@@ -87,7 +152,7 @@
   /* Small uppercase monospace label that sits above a section heading */
   .eyebrow {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12.5px;
     line-height: 1;
     text-transform: uppercase;
     letter-spacing: 0.18em;
@@ -152,9 +217,9 @@
     border: 1px solid var(--color-line);
     background-color: rgba(255, 255, 255, 0.02);
     border-radius: 4px;
-    padding: 0.25rem 0.5rem;
+    padding: 0.3rem 0.6rem;
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12.5px;
     line-height: 1.2;
     color: var(--color-muted);
     white-space: nowrap;

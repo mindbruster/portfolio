@@ -26,10 +26,10 @@ export default function Pipeline({
                 <span className="font-mono text-[10px] text-accent">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <p className="mt-1.5 text-sm font-medium leading-snug text-fg">
+                <p className="mt-1.5 text-base font-medium leading-snug text-fg">
                   {s.label}
                 </p>
-                <p className="mt-1.5 text-xs leading-relaxed text-subtle">
+                <p className="mt-1.5 text-sm leading-relaxed text-subtle">
                   {s.note}
                 </p>
               </div>

@@ -22,13 +22,13 @@ export default function About() {
 
               <dl className="mt-12 grid gap-x-10 gap-y-6 border-t border-line pt-8 sm:grid-cols-3">
                 <div>
-                  <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-subtle">
+                  <dt className="font-mono text-[12.5px] uppercase tracking-[0.14em] text-subtle">
                     Based in
                   </dt>
                   <dd className="mt-2 text-sm text-muted">{profile.location}</dd>
                 </div>
                 <div>
-                  <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-subtle">
+                  <dt className="font-mono text-[12.5px] uppercase tracking-[0.14em] text-subtle">
                     Studied
                   </dt>
                   <dd className="mt-2 text-sm text-muted">
@@ -36,7 +36,7 @@ export default function About() {
                   </dd>
                 </div>
                 <div>
-                  <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-subtle">
+                  <dt className="font-mono text-[12.5px] uppercase tracking-[0.14em] text-subtle">
                     Looking for
                   </dt>
                   <dd className="mt-2 text-sm text-muted">

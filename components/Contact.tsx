@@ -27,7 +27,7 @@ export default function Contact() {
           <dl className="mt-16 grid gap-px border-t border-line sm:grid-cols-2">
             {channels.map((c) => (
               <div key={c.label} className="border-b border-line py-6">
-                <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-subtle">
+                <dt className="font-mono text-[12.5px] uppercase tracking-[0.14em] text-subtle">
                   {c.label}
                 </dt>
                 <dd className="mt-2">

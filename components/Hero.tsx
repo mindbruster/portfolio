@@ -10,8 +10,9 @@ const live = projects.filter((p) => p.href);
 export default function Hero() {
   return (
     <section id="home" className="relative flex min-h-[92vh] items-center pt-28">
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-40 -top-40 h-[34rem] w-[34rem] rounded-full bg-accent/[0.07] blur-[120px]" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="hero-glow absolute inset-x-0 -top-32 h-[130%]" />
+        <div className="hero-fade absolute inset-0" />
       </div>
 
       <div className="container-page relative">
@@ -20,14 +21,14 @@ export default function Hero() {
         </p>
 
         <h1
-          className="fade-up mt-6 text-5xl font-semibold leading-[0.95] tracking-[var(--tracking-display)] sm:text-7xl lg:text-8xl"
+          className="text-gradient fade-up mt-6 text-6xl font-semibold leading-[0.95] tracking-[var(--tracking-display)] sm:text-8xl lg:text-9xl"
           style={{ animationDelay: "60ms" }}
         >
           {profile.name}
         </h1>
 
         <p
-          className="fade-up mt-8 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl"
+          className="fade-up mt-8 max-w-3xl text-xl leading-relaxed text-muted sm:text-2xl"
           style={{ animationDelay: "120ms" }}
         >
           {profile.headline}
@@ -42,7 +43,7 @@ export default function Hero() {
                   href={p.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link-underline font-mono text-sm"
+                  className="link-underline font-mono text-base"
                 >
                   {p.hrefLabel}
                   <ArrowUpRight className="size-3.5" aria-hidden />
@@ -80,7 +81,7 @@ export default function Hero() {
               <dt className="text-3xl font-semibold tracking-tight sm:text-4xl">
                 {s.value}
               </dt>
-              <dd className="mt-2 text-sm leading-snug text-subtle">{s.label}</dd>
+              <dd className="mt-2 text-base leading-snug text-subtle">{s.label}</dd>
             </div>
           ))}
         </dl>

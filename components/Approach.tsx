@@ -20,13 +20,13 @@ export default function Approach() {
           {principles.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.06}>
               <div className="border-t border-line pt-6">
-                <span className="font-mono text-[11px] text-accent">
+                <span className="font-mono text-[12.5px] text-accent">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className="mt-3 text-lg font-medium tracking-tight">
+                <h3 className="mt-3 text-xl font-medium tracking-tight">
                   {p.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted">
+                <p className="mt-3 text-base leading-relaxed text-muted">
                   {p.body}
                 </p>
               </div>
@@ -37,7 +37,7 @@ export default function Approach() {
         <Reveal delay={0.1}>
           <div className="mt-20 max-w-2xl space-y-5 border-t border-line pt-10">
             {profile.bio.map((para) => (
-              <p key={para} className="text-base leading-relaxed text-muted">
+              <p key={para} className="text-lg leading-relaxed text-muted">
                 {para}
               </p>
             ))}

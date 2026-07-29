@@ -34,13 +34,13 @@ export default function Notes() {
           {notes.map((n, i) => (
             <Reveal as="li" key={n.title} delay={i * 0.05}>
               <div className="h-full border-t border-line py-8 sm:pr-10">
-                <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
+                <p className="font-mono text-[12.5px] uppercase tracking-[0.14em] text-accent">
                   {n.tag}
                 </p>
-                <h3 className="mt-3 text-lg font-medium leading-snug tracking-tight">
+                <h3 className="mt-3 text-xl font-medium leading-snug tracking-tight">
                   {n.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted">
+                <p className="mt-3 text-base leading-relaxed text-muted">
                   {n.blurb}
                 </p>
               </div>

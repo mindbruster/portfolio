@@ -26,14 +26,14 @@ export default function Work() {
                 {/* Left rail: identity */}
                 <div>
                   <div className="flex items-baseline gap-3">
-                    <h3 className="text-2xl font-semibold tracking-tight">
+                    <h3 className="text-3xl font-semibold tracking-tight">
                       {p.name}
                     </h3>
-                    <span className="font-mono text-[11px] text-subtle">
+                    <span className="font-mono text-[12.5px] text-subtle">
                       {p.year}
                     </span>
                   </div>
-                  <p className="mt-2 text-sm text-muted">{p.tagline}</p>
+                  <p className="mt-2 text-base text-muted">{p.tagline}</p>
 
                   {p.href ? (
                     <a
@@ -69,13 +69,13 @@ export default function Work() {
 
                 {/* Right: the actual substance */}
                 <div>
-                  <p className="text-lg leading-relaxed text-fg">{p.problem}</p>
+                  <p className="text-xl leading-relaxed text-fg">{p.problem}</p>
 
                   <ul className="mt-6 space-y-3">
                     {p.built.map((line) => (
                       <li
                         key={line}
-                        className="relative pl-5 text-sm leading-relaxed text-muted before:absolute before:left-0 before:top-[0.6em] before:size-1 before:rounded-full before:bg-accent/70"
+                        className="relative pl-5 text-base leading-relaxed text-muted before:absolute before:left-0 before:top-[0.6em] before:size-1 before:rounded-full before:bg-accent/70"
                       >
                         {line}
                       </li>
@@ -94,7 +94,7 @@ export default function Work() {
                   {p.study && (
                     <Link
                       href={`/work/${p.slug}`}
-                      className="link-underline mt-6 text-sm"
+                      className="link-underline mt-6 text-base"
                     >
                       Read the case study
                       <ArrowRight className="size-3.5" aria-hidden />
