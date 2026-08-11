@@ -15,7 +15,7 @@ export default function Work() {
         <Reveal>
           <p className="eyebrow">Selected work</p>
           <h2 className="mt-4 max-w-2xl text-3xl font-semibold tracking-[var(--tracking-display)] sm:text-4xl">
-            Five platforms in production, and the problems that made them hard.
+            Six platforms in production, and the problems that made them hard.
           </h2>
         </Reveal>
 

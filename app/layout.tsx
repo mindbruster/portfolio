@@ -20,7 +20,7 @@ const jetbrains = JetBrains_Mono({
 
 const title = "Abdul Aziz — AI Engineer";
 const description =
-  "AI Engineer building production LLM systems: RAG, multi-model orchestration, and the content-safety layers that make them shippable. Five platforms shipped in twelve months.";
+  "AI Engineer building production LLM systems: RAG, multi-model orchestration, and the content-safety layers that make them shippable. Six platforms shipped in twelve months.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://abdulaziz.dev"),

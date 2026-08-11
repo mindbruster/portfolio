@@ -17,21 +17,21 @@ export const profile = {
     "I build LLM systems that reach production — RAG, multi-model orchestration, and the content-safety layers that make them shippable.",
   /** Short narrative: who, how they got here, what they want next. */
   about: [
-    "I graduated from FAST NUCES in 2025 and went straight into building AI products that real people use. Within a year that meant five platforms in production — and a much clearer idea of where the difficulty actually lives.",
+    "I graduated from FAST NUCES in 2025 and went straight into building AI products that real people use. Within a year that meant six platforms in production — and a much clearer idea of where the difficulty actually lives.",
     "It is rarely the model. It is what surrounds it: deciding what a system should refuse to do, what happens when a provider stops responding, how a flat subscription fee gets attributed to a project, and how you prove an answer came from a real source. Those constraints are the parts I find genuinely interesting.",
     "I care most about systems that carry consequences — where a wrong output reaches a child, or a contract gets signed on bad advice. That is where engineering discipline stops being a preference and starts being the product.",
     "I am looking for AI engineering work on applied LLM and retrieval systems, ideally somewhere the correctness bar is high.",
   ],
   /** Longer version for the Approach block. */
   bio: [
-    "Over the past year I've taken five AI platforms from requirements to production: a child-safe learning companion for ages 3–13, an AI contract analyser for UAE law, a voice-to-art generative platform, a semantic memory layer for ChatGPT and Gemini, and an internal tool that tracks AI spend across six providers.",
+    "Over the past year I've taken six AI platforms from requirements to production: a child-safe learning companion for ages 3–13, an AI contract analyser for UAE law, a voice-to-art generative platform, a brief-to-video generation platform, a semantic memory layer for ChatGPT and Gemini, and an internal tool that tracks AI spend across six providers.",
     "The work I'm proudest of is the least visible. On the children's platform, every model response passes a layered safety pipeline before a child sees it. The principle we built to: never trust the model to behave — the filter is the safety guarantee, not the model's intentions.",
     "Before this, computer vision: a four-stage YOLOv8 pipeline for automated litter-offence detection, validated against live city cameras with Punjab Safe Cities Authority.",
   ],
 } as const;
 
 export const stats = [
-  { value: "5", label: "platforms shipped to production" },
+  { value: "6", label: "platforms shipped to production" },
   { value: "20+", label: "languages served with safety filtering" },
   { value: "6", label: "AI providers under one cost model" },
   { value: "30k+", label: "images curated and fine-tuned on" },
@@ -122,6 +122,75 @@ export const projects: Project[] = [
         "Shipped to production and live at yoluno.com across 20+ languages.",
         "Every model response passes safety screening before reaching a child.",
         "Parents get real-time visibility into flagged interactions rather than a monthly summary.",
+      ],
+    },
+  },
+  {
+    slug: "motionforge",
+    shot: {
+      src: "/shots/motionforge.jpg",
+      alt: "The MotionForge (Stytch Me Up) landing page: hand-drawn graffiti branding over the tagline “Brief in. Video out. ten times faster.”",
+      w: 2970,
+      h: 1624,
+    },
+    gallery: [
+      {
+        src: "/shots/motionforge-features.jpg",
+        alt: "The feature grid: 28 AI brains, brand-locked output, image-to-video across Kling/Hailuo/Runway, voice and karaoke captions, 90-second render, and cinematic camera/transition/grade controls.",
+        w: 2970,
+        h: 1624,
+      },
+    ],
+    name: "MotionForge",
+    tagline: "Brief-to-video generation platform",
+    year: "2026",
+    problem:
+      "Turn a text brief into a finished, on-brand marketing video. The model is the easy part — the work is orchestrating two dozen of them into one pipeline and stopping the output from drifting off-brand at every step.",
+    built: [
+      "A brief-to-video pipeline that chains models across story, vision, scripting, motion and voiceover, assembling a finished social cut from a single text brief.",
+      "Multi-provider video generation behind one gateway — Kling, Hailuo and Runway — with image-to-video and end-frame anchoring, so the model is a config choice, not a rewrite.",
+      "Brand-locked output — colours, fonts and tone enforced and scored — plus non-robotic TTS with word-level caption sync, rendered to MP4/WebM and 4K in about 90 seconds.",
+    ],
+    stack: ["Next.js", "TypeScript", "Multi-model orchestration", "Kling / Hailuo / Runway", "TTS", "Railway"],
+    href: "https://motionforgeweb-production.up.railway.app",
+    hrefLabel: "live demo",
+    study: {
+      role: "GenAI engineer — orchestration pipeline, provider gateway, brand system",
+      context:
+        "MotionForge (Stytch Me Up) turns a text brief into a finished, on-brand marketing video. Brief in, video out — story, script, motion, voiceover and captions are generated and assembled automatically, then rendered to 4K in about 90 seconds. It runs as multi-tenant SaaS with brand kits, seats, an API and webhooks.",
+      diagram: {
+        title: "From a text brief to a rendered cut",
+        steps: [
+          { label: "Brief", note: "A short text description of the video the user wants" },
+          { label: "Plan", note: "Story, script and shot list generated and brand rules loaded" },
+          { label: "Assets", note: "Scenes and images generated, then animated image-to-video" },
+          { label: "Video models", note: "Kling, Hailuo or Runway routed per shot through one gateway" },
+          { label: "Voice + captions", note: "TTS voiceover with word-level karaoke caption sync" },
+          { label: "Render", note: "Composited and rendered to MP4/WebM and 4K as a background job" },
+        ],
+      },
+      decisions: [
+        {
+          title: "One gateway, many video models",
+          body: "Kling, Hailuo and Runway each win on different shots, and new models arrive constantly. Routing them through a single service layer — the same pattern used elsewhere for chat and image models — means choosing a model is a config decision rather than a rewrite, and a slow or failing provider degrades one shot instead of the whole render.",
+        },
+        {
+          title: "Brand-lock is a constraint, not a suggestion",
+          body: "A generative pipeline drifts — every stage is a chance for the wrong colour, font or tone to creep in. Brand rules are enforced downstream of generation and scored against the output, so the video that ships stays on-brand instead of merely starting that way. For a marketing tool, off-brand is the same as broken.",
+        },
+        {
+          title: "Captions are timed, not pasted",
+          body: "TTS timestamps drive word-level karaoke captions rather than a block of text dropped over the clip. Sync at the word is the line between a cut that looks produced and one that looks automated — and it only works if the voice and caption stages share the same timing source.",
+        },
+        {
+          title: "Rendering is an async job",
+          body: "A 90-second render cannot sit inside a request. The pipeline runs as a background job with its own status and output formats, so the interface stays responsive while a multi-model composite is assembled, and a long provider call cannot pin a worker.",
+        },
+      ],
+      outcome: [
+        "Live: a text brief becomes a finished, on-brand video in about 90 seconds.",
+        "Video generation spread across Kling, Hailuo and Runway behind one gateway.",
+        "Multi-format output — MP4, WebM and 4K — with brand kits, seats and an API around it.",
       ],
     },
   },
@@ -455,9 +524,9 @@ export const experience: Role[] = [
     period: "Nov 2025 — Present",
     location: "Lahore, Pakistan",
     points: [
-      "Ship production GenAI features end to end across four client and internal platforms, owning work from model integration through deployment.",
+      "Ship production GenAI features end to end across five client and internal platforms, owning work from model integration through deployment.",
       "Build RAG pipelines and vector search over production knowledge bases, including semantic memory and retrieval modules and citation-grounded legal retrieval.",
-      "Orchestrate OpenAI, Gemini and Replicate behind a single service layer spanning chat, vision, transcription, image generation and TTS.",
+      "Orchestrate OpenAI, Gemini, Replicate and video models (Kling, Hailuo, Runway) behind a single service layer spanning chat, vision, transcription, image generation, video generation and TTS.",
       "Design and implement LLM content-safety and moderation layers, including a multi-stage filter classifying every response before it reaches a child user.",
       "Deliver the surrounding product surface: multi-tenant APIs, Stripe billing, real-time dashboards and Dockerised services.",
     ],
@@ -495,6 +564,8 @@ export const skills = [
       "Prompt engineering",
       "Multi-model orchestration",
       "Content safety",
+      "Video generation (Kling / Runway)",
+      "TTS",
       "LangChain",
       "OpenAI",
       "Gemini",
