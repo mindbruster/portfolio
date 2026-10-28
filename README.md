@@ -4,6 +4,15 @@ Personal site for an AI engineer working on production LLM systems. Built around
 evidence: live products, case studies with architecture, and the reasoning behind
 the decisions.
 
+The design argues one idea — *the model is the easy part* — and is set like an
+engineering document: warm paper, ink, hairline rules, one vermilion signal colour,
+numbered sections (§) and figures. The hero figure is a request trace, drawn like
+an observability waterfall, where every span is a layer built in one of the
+projects and the single grey span is the model. A dark ("ink") theme follows the
+system setting, with a toggle that remembers the choice.
+
+Type: Instrument Serif (display), Geist (text), Geist Mono (labels).
+
 **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · Framer Motion
 
 ---
@@ -23,18 +32,27 @@ npm run lint
 
 ```
 app/
-  layout.tsx             root layout, fonts, metadata, skip link
+  layout.tsx             root layout, fonts, metadata, theme script, skip link
   page.tsx               home — composes the sections below
   work/[slug]/page.tsx   case-study pages, statically generated
-  globals.css            design tokens (Tailwind v4 @theme) + component classes
+  opengraph-image.tsx    link-preview image (and one per case study)
+  not-found.tsx          404
+  globals.css            design tokens for both themes + component classes
   icon.svg               favicon, alongside favicon.ico and apple-icon.png
 components/
-  Hero  About  Work  Approach  Experience  Notes  Contact  Navbar  Footer
-  Pipeline.tsx           architecture flow diagram
+  Header  Hero  Work  About  Experience  Notes  Contact  Footer
+  Trace.tsx              the hero's interactive request waterfall
+  Pipeline.tsx           architecture diagram, drawn as a signal path
+  Frame.tsx              screenshot in a browser window
+  SectionHead.tsx        § number, rule and serif title for each section
+  ThemeToggle.tsx        light / dark switch
+  Mark.tsx               the logo — a three-span waterfall
   Reveal.tsx             scroll-reveal wrapper
   HashScroll.tsx         makes deep links to a section land correctly
 lib/
-  content.ts             all copy and project data
+  content.ts             all copy, project data and the hero trace
+  og.tsx                 shared template for the link-preview images
+  og-fonts/              Instrument Serif TTFs for those images (OFL)
 public/
   shots/                 product screenshots
   resume.pdf             downloadable CV
@@ -55,6 +73,7 @@ Adding a project:
   slug: "my-project",              // becomes /work/my-project
   name: "My Project",
   tagline: "One line on what it is",
+  layer: "Safety screening",       // the layer around the model it shows
   year: "2026",
   problem: "The interesting engineering problem, not a feature list.",
   built: ["What was actually built.", "Two or three lines."],
@@ -87,8 +106,13 @@ They live in `public/shots/`. Two rules:
 
 Things that will bite you if you assume otherwise:
 
-- **Tailwind v4 configures from CSS.** Tokens are in `app/globals.css` under
-  `@theme`. There is no `tailwind.config.ts`, and adding one back does nothing.
+- **Tailwind v4 configures from CSS.** Colours are CSS variables on `:root`,
+  swapped for the dark theme, and exposed to Tailwind through `@theme inline` —
+  so `bg-paper` / `text-ink` follow the theme with no `dark:` variants anywhere.
+  There is no `tailwind.config.ts`, and adding one back does nothing.
+- **The hero trace is data.** Its spans live in `trace` in `content.ts`; each
+  `slug` links a span to its project. Timings are illustrative, and the figure
+  caption says so.
 - **Navigation uses root-relative hashes** (`/#work`). A bare `#work` resolves
   against the current URL, so from `/work/[slug]` it silently does nothing.
 - **The hero is a server component** using CSS keyframes rather than Framer

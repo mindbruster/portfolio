@@ -1,53 +1,60 @@
-import { Fragment } from "react";
+import type { CSSProperties } from "react";
 
 type Step = { label: string; note: string };
 
 /**
- * Architecture flow diagram, rendered as semantic HTML rather than an image
- * so it stays readable to screen readers, scales on mobile, and never
- * ships a bitmap. Horizontal on wide screens, vertical on narrow.
+ * Architecture flow, drawn as a signal path: numbered nodes on one line.
+ * Semantic HTML rather than an image, so it reads aloud, reflows, and never
+ * ships a bitmap. Runs across on wide screens and down on narrow ones.
  */
 export default function Pipeline({
   title,
   steps,
+  figure,
 }: {
   title: string;
   steps: Step[];
+  figure: string;
 }) {
   return (
-    <figure className="not-prose">
-      <figcaption className="eyebrow">{title}</figcaption>
-
-      <ol className="mt-6 flex flex-col gap-0 lg:flex-row lg:flex-wrap lg:items-stretch lg:gap-0">
-        {steps.map((s, i) => (
-          <Fragment key={s.label}>
-            <li className="relative flex-1 lg:min-w-[9rem]">
-              <div className="h-full rounded-md border border-line bg-raised/60 px-4 py-4">
-                <span className="font-mono text-[10px] text-accent">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <p className="mt-1.5 text-base font-medium leading-snug text-fg">
-                  {s.label}
-                </p>
-                <p className="mt-1.5 text-sm leading-relaxed text-subtle">
-                  {s.note}
-                </p>
+    <figure>
+      <ol
+        className="relative grid lg:grid-cols-[repeat(var(--n),minmax(0,1fr))] lg:gap-x-4"
+        style={{ "--n": steps.length } as CSSProperties}
+      >
+        {steps.map((s, i) => {
+          const last = i === steps.length - 1;
+          return (
+            <li key={s.label} className="relative grid grid-cols-[2.25rem_1fr] gap-x-4 pb-8 last:pb-0 lg:block lg:pb-0">
+              {!last && (
+                <>
+                  {/* down to the next node (narrow) */}
+                  <span aria-hidden className="absolute top-9 bottom-0 left-[1.125rem] w-px bg-rule-strong lg:hidden" />
+                  {/* across to the next node (wide) */}
+                  <span
+                    aria-hidden
+                    className="absolute top-[1.125rem] left-9 hidden h-px w-[calc(100%-1.25rem)] bg-rule-strong lg:block"
+                  />
+                </>
+              )}
+              <span
+                className={`relative z-10 grid size-9 place-items-center rounded-full border bg-paper font-mono text-[12px] ${
+                  i === 0 || last ? "border-signal text-signal" : "border-rule-strong text-ink"
+                }`}
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div className="pt-1.5 lg:pt-0 lg:pr-2">
+                <p className="font-medium leading-snug lg:mt-4">{s.label}</p>
+                <p className="mt-1.5 text-[15px] leading-relaxed text-muted">{s.note}</p>
               </div>
             </li>
-
-            {/* Connector: chevron between rows on mobile, arrow between columns on desktop */}
-            {i < steps.length - 1 && (
-              <li
-                aria-hidden
-                className="flex shrink-0 items-center justify-center py-1.5 text-subtle lg:px-2 lg:py-0"
-              >
-                <span className="lg:hidden">↓</span>
-                <span className="hidden lg:inline">→</span>
-              </li>
-            )}
-          </Fragment>
-        ))}
+          );
+        })}
       </ol>
+      <figcaption className="mt-8 border-t border-rule pt-3 font-mono text-[11.5px] text-subtle">
+        {figure} — {title}
+      </figcaption>
     </figure>
   );
 }

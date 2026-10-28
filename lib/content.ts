@@ -6,18 +6,29 @@
 export const profile = {
   name: "Abdul Aziz",
   role: "AI Engineer",
+  /** Canonical production URL — metadata, sitemap and robots all point here. */
+  site: "https://abdul-aziz-ai.vercel.app",
   location: "Lahore, Pakistan",
   email: "mughalabdulaziz4@gmail.com",
   phone: "+92 343 4489592",
   linkedin: "https://www.linkedin.com/in/abdul-aziz-a6670a249",
   github: "https://github.com/mindbruster",
   resume: "/resume.pdf",
+  /** Shown as a live dot in the hero. Delete the line when not looking. */
+  status: "Open to AI engineering roles",
+  /** Drives the local-time readout next to the location. */
+  timeZone: "Asia/Karachi",
+  /** The site's thesis — the hero headline. */
+  thesis: "The model is the easy part.",
+  /** Hero lede: who, and what "everything around it" means. */
+  lede:
+    "I'm Abdul Aziz, an AI engineer in Lahore. I build what surrounds the model — safety filters, retrieval, routing, memory, metering and ledgers — and seven of those systems are in production.",
   /** Sits under the name. One sentence, no adjectives. */
   headline:
     "I build LLM systems that reach production — RAG, multi-model orchestration, and the content-safety layers that make them shippable.",
   /** Short narrative: who, how they got here, what they want next. */
   about: [
-    "I graduated from FAST NUCES in 2025 and went straight into building AI products that real people use. Within a year that meant six platforms in production — and a much clearer idea of where the difficulty actually lives.",
+    "I graduated from FAST NUCES in 2025 and went straight into building AI products that real people use. Within a year that meant seven platforms in production — and a much clearer idea of where the difficulty actually lives.",
     "It is rarely the model. It is what surrounds it: deciding what a system should refuse to do, what happens when a provider stops responding, how a flat subscription fee gets attributed to a project, and how you prove an answer came from a real source. Those constraints are the parts I find genuinely interesting.",
     "I care most about systems that carry consequences — where a wrong output reaches a child, or a contract gets signed on bad advice. That is where engineering discipline stops being a preference and starts being the product.",
     "I am looking for AI engineering work on applied LLM and retrieval systems, ideally somewhere the correctness bar is high.",
@@ -31,7 +42,7 @@ export const profile = {
 } as const;
 
 export const stats = [
-  { value: "6", label: "platforms shipped to production" },
+  { value: "7", label: "platforms shipped to production" },
   { value: "20+", label: "languages served with safety filtering" },
   { value: "6", label: "AI providers under one cost model" },
   { value: "30k+", label: "images curated and fine-tuned on" },
@@ -41,6 +52,8 @@ export type Project = {
   slug: string;
   name: string;
   tagline: string;
+  /** The layer around the model this project is evidence for. */
+  layer: string;
   year: string;
   /** The interesting engineering problem, not a feature list. */
   problem: string;
@@ -68,12 +81,16 @@ export type Project = {
   };
 };
 
+/** What to call a project's address when it has no public link. */
+export const addressOf = (p: Project) => p.hrefLabel ?? (p.internal ? "internal" : "no public link");
+
 export const projects: Project[] = [
   {
     slug: "yoluno",
     shot: { src: "/shots/yoluno.jpg", alt: "The Yoluno homepage, showing the Luno character and the parent-governed positioning", w: 1485, h: 812 },
     name: "Yoluno",
     tagline: "Child-safe AI learning platform",
+    layer: "Safety screening",
     year: "2025 — present",
     problem:
       "An AI companion for children aged 3–13, in 20+ languages, where parents define the boundaries. The model will eventually say something wrong — so the architecture assumes it will.",
@@ -143,6 +160,7 @@ export const projects: Project[] = [
     ],
     name: "MotionForge",
     tagline: "Brief-to-video generation platform",
+    layer: "Model routing",
     year: "2026",
     problem:
       "Turn a text brief into a finished, on-brand marketing video. The model is the easy part — the work is orchestrating two dozen of them into one pipeline and stopping the output from drifting off-brand at every step.",
@@ -152,8 +170,6 @@ export const projects: Project[] = [
       "Brand-locked output — colours, fonts and tone enforced and scored — plus non-robotic TTS with word-level caption sync, rendered to MP4/WebM and 4K in about 90 seconds.",
     ],
     stack: ["Next.js", "TypeScript", "Multi-model orchestration", "Kling / Hailuo / Runway", "TTS", "Railway"],
-    href: "https://motionforgeweb-production.up.railway.app",
-    hrefLabel: "live demo",
     study: {
       role: "GenAI engineer — orchestration pipeline, provider gateway, brand system",
       context:
@@ -188,7 +204,7 @@ export const projects: Project[] = [
         },
       ],
       outcome: [
-        "Live: a text brief becomes a finished, on-brand video in about 90 seconds.",
+        "A text brief becomes a finished, on-brand video in about 90 seconds.",
         "Video generation spread across Kling, Hailuo and Runway behind one gateway.",
         "Multi-format output — MP4, WebM and 4K — with brand kits, seats and an API around it.",
       ],
@@ -199,6 +215,7 @@ export const projects: Project[] = [
     shot: { src: "/shots/graysen.jpg", alt: "The Graysen homepage, showing detected contract issues including a hidden renewal clause", w: 1485, h: 812 },
     name: "Graysen",
     tagline: "AI contract analysis for UAE law",
+    layer: "Retrieval & grounding",
     year: "2026",
     problem:
       "Legal answers that can't be traced to a source are worthless. In a regulated domain, grounding isn't a feature — it's the product.",
@@ -255,6 +272,7 @@ export const projects: Project[] = [
     shot: { src: "/shots/soundbyte.jpg", alt: "The SoundBYTE homepage for artist Amrita Sethi", w: 1485, h: 812 },
     name: "SoundBYTE",
     tagline: "Voice-to-art generative platform",
+    layer: "Generation to fulfilment",
     year: "2025 — present",
     problem:
       "Turn a voice recording into a unique visual identity, then get it onto a physical wall. Digital generation is half the job; fulfilment is the other half.",
@@ -316,6 +334,7 @@ export const projects: Project[] = [
     },
     name: "LLM Meter",
     tagline: "Multi-provider AI cost attribution",
+    layer: "Cost attribution",
     year: "2026",
     problem:
       "Everyone tracks their OpenAI bill. Almost nobody can say which project it came from — and subscription seats aren't per-token, so the cost has to be allocated rather than measured.",
@@ -372,6 +391,7 @@ export const projects: Project[] = [
     },
     name: "myNeutron",
     tagline: "Semantic memory for ChatGPT and Gemini",
+    layer: "Semantic memory",
     year: "2025 — present",
     problem:
       "Chat assistants forget everything between sessions. Giving them persistent memory means deciding what is worth remembering, and retrieving it without drowning the context window.",
@@ -420,6 +440,68 @@ export const projects: Project[] = [
     },
   },
   {
+    slug: "jewelry-erp",
+    shot: {
+      src: "/shots/jewelry-erp-v2.jpg",
+      alt: "The Jewelry ERP landing page — “Run the whole jewelry shop on one screen.” — beside a bill priced by gold weight and making charge, with today's gold rate",
+      w: 2970,
+      h: 1624,
+    },
+    name: "Jewelry ERP",
+    tagline: "Operations and books for a working jewellery shop",
+    layer: "Ledger & books",
+    year: "2026",
+    problem:
+      "A jewellery shop's books are kept in grams, not just rupees. Gold leaves the building with makers and stone setters and comes back lighter and at a different purity — and every gram the system loses track of is money.",
+    built: [
+      "Daily gold and silver rates, raw metal and stone stock, and the maker → stone setter → polish pipeline, with every gram and carat that is out with a worker accounted for.",
+      "Billing in more than one currency on a double-entry ledger the database itself enforces — an unbalanced journal entry is refused at commit.",
+      "An optional AI assistant that answers the owner's questions, in English or Roman Urdu, as one read-only SQL query — and reads photographed bills.",
+    ],
+    stack: ["FastAPI", "PostgreSQL", "SQLAlchemy", "React", "TypeScript", "OpenRouter", "Railway"],
+    href: "https://markez-e-hera-production.up.railway.app",
+    hrefLabel: "jewelry-erp",
+    study: {
+      role: "Full-stack engineer — domain model, ledger, manufacturing pipeline, AI assistant, deployment",
+      context:
+        "A management system for a jewellery shop in Pakistan: daily metal rates, raw gold, silver and stone stock, manufacturing from maker to stone setter to polish, per-piece stone breakdowns, multi-currency bills, a double-entry ledger, role-based access and printable invoices. Staff use it at the counter every day, and the owner gets a daily summary on WhatsApp.",
+      diagram: {
+        title: "From bullion to a bill",
+        steps: [
+          { label: "Buy", note: "Raw gold, silver and stone parcels enter stock at their own rates" },
+          { label: "Maker", note: "Metal issued to a karigar; wastage reckoned in ratti on what comes back" },
+          { label: "Stone setter", note: "Stones issued and set; loss capped per hundred stones issued" },
+          { label: "Polish", note: "The finished piece enters stock with its stones broken down" },
+          { label: "Bill", note: "Priced from the day's rate, in rupees or dollars" },
+          { label: "Ledger", note: "Every document posts a double entry the database checks" },
+        ],
+      },
+      decisions: [
+        {
+          title: "Two wastage rules, never one",
+          body: "The maker's allowance is ratti out of 96 on what comes back; the setter's is grams per hundred stones on what went out. One is an entitlement — an unused part is owed back to the maker — the other a cap the shop keeps. They cannot be converted into each other without already knowing the outcome, so the basis is fixed when the job is issued and travels with it. Folding them into one rule would hand metal away or pocket it.",
+        },
+        {
+          title: "Gold and silver use different scales",
+          body: "Gold purity is quoted out of 24 and silver out of 1,000. Putting silver through the karat formula would call 925 silver “38.5k” and value it at four times what it is worth. Each metal has its own category and its own formula, and a measured tunch percentage overrides both when the shop has one.",
+        },
+        {
+          title: "The database refuses an unbalanced entry",
+          body: "Every bill, receipt and voucher posts a double entry, and a deferred constraint trigger checks the balance at commit — so a bug in application code fails a transaction instead of corrupting the books. Payments lock the bills they settle and carry an idempotency key, so a double click returns the same receipt rather than taking the money twice.",
+        },
+        {
+          title: "The model only ever reads",
+          body: "The assistant turns a question into one SELECT over a curated description of the schema, not the real DDL. A guard rejects anything but a single read-only statement, and the query runs in a read-only transaction that is rolled back afterwards. With no model configured, every report still works — only the written explanation is missing.",
+        },
+      ],
+      outcome: [
+        "Live on Railway and used at the shop counter every day.",
+        "About a thousand end-to-end checks assert the shop's own worked figures, and deploys wait for CI to pass.",
+        "Point-in-time recovery: the books can be restored to any minute in the last four weeks.",
+      ],
+    },
+  },
+  {
     slug: "litter-detection",
     shot: {
       src: "/shots/litter-detection-1.jpg",
@@ -443,6 +525,7 @@ export const projects: Project[] = [
     ],
     name: "Litter Detection",
     tagline: "Computer vision for Punjab Safe Cities Authority",
+    layer: "Vision pipeline",
     year: "2024 — 2025",
     problem:
       "Catching littering from a moving vehicle on a live road camera. Not one model — a four-stage pipeline where every stage can fail the next.",
@@ -612,14 +695,45 @@ export const education = {
   period: "Aug 2021 — Jul 2025",
 };
 
+/** Home-page sections in reading order. The number is the § marker. */
 export const nav = [
-  { href: "/#about", label: "About" },
-  { href: "/#work", label: "Work" },
-  { href: "/#approach", label: "Approach" },
-  { href: "/#experience", label: "Experience" },
-  { href: "/#notes", label: "Notes" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/#work", id: "work", label: "Work" },
+  { href: "/#about", id: "about", label: "About" },
+  { href: "/#experience", id: "experience", label: "Experience" },
+  { href: "/#notes", id: "notes", label: "Notes" },
+  { href: "/#contact", id: "contact", label: "Contact" },
 ] as const;
+
+export type Span = {
+  /** Reads like an OpenTelemetry span name. */
+  name: string;
+  /** The project this layer was built in. Absent for the model itself. */
+  slug?: string;
+  note: string;
+  /** Milliseconds from the start of the request. Illustrative, not measured. */
+  start: number;
+  end: number;
+};
+
+/**
+ * The hero figure: one composite request, traced end to end. Each span is a
+ * layer shipped in one of the projects above — except the model, which is
+ * the point.
+ */
+export const trace: { total: number; spans: Span[] } = {
+  total: 1700,
+  spans: [
+    { name: "input.screen", slug: "yoluno", note: "Keyword scan, then a multilingual classifier that survives paraphrase.", start: 0, end: 46 },
+    { name: "memory.recall", slug: "myneutron", note: "Context from earlier sessions, found by meaning rather than by keyword.", start: 46, end: 132 },
+    { name: "retrieve.cite", slug: "graysen", note: "Clauses retrieved from UAE federal law, with a citation attached to every answer.", start: 132, end: 290 },
+    { name: "route.provider", slug: "motionforge", note: "One gateway picks Kling, Hailuo or Runway for each shot.", start: 290, end: 314 },
+    { name: "model.generate", note: "Someone else's model. The easy part.", start: 314, end: 1410 },
+    { name: "output.screen", slug: "yoluno", note: "Every reply checked before a child ever sees it.", start: 1410, end: 1468 },
+    { name: "render.fulfil", slug: "soundbyte", note: "Generated art prepared to physical spec and shipped as a print.", start: 1468, end: 1630 },
+    { name: "cost.attribute", slug: "llm-meter", note: "Spend allocated to the team and project that caused it.", start: 1630, end: 1662 },
+    { name: "ledger.post", slug: "jewelry-erp", note: "A balanced double entry, checked by the database at commit.", start: 1662, end: 1688 },
+  ],
+};
 
 export type Note = { title: string; blurb: string; tag: string };
 

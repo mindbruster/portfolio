@@ -1,52 +1,52 @@
 import { ArrowUpRight } from "lucide-react";
 import { notes, profile } from "@/lib/content";
 import Reveal from "./Reveal";
+import SectionHead from "./SectionHead";
 
 /**
- * Short technical write-ups. Writing is the cheapest credibility multiplier
- * a portfolio has — it shows how someone thinks, not just what they shipped.
+ * Short technical write-ups, filed like incident reports. Writing shows how
+ * someone thinks, not just what they shipped.
  */
 export default function Notes() {
   return (
-    <section id="notes" className="section">
-      <div className="container-page">
-        <Reveal>
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="eyebrow">Notes</p>
-              <h2 className="mt-4 max-w-xl text-3xl font-semibold tracking-[var(--tracking-display)] sm:text-4xl">
-                Things that broke, and what fixed them.
-              </h2>
-            </div>
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-underline font-mono text-xs"
-            >
-              More on LinkedIn
-              <ArrowUpRight className="size-3" aria-hidden />
-            </a>
-          </div>
-        </Reveal>
+    <section id="notes" className="scroll-mt-16 py-16 lg:py-24">
+      <div className="page">
+        <SectionHead
+          n="04"
+          label="Notes"
+          title={
+            <>
+              Things that broke, <em className="text-muted">and what fixed them.</em>
+            </>
+          }
+        >
+          <a
+            href={profile.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link inline-flex items-center gap-1.5 font-mono text-[13px]"
+          >
+            More on LinkedIn
+            <ArrowUpRight className="size-3" aria-hidden />
+          </a>
+        </SectionHead>
 
-        <ul className="mt-14 grid gap-px sm:grid-cols-2">
-          {notes.map((n, i) => (
-            <Reveal as="li" key={n.title} delay={i * 0.05}>
-              <div className="h-full border-t border-line py-8 sm:pr-10">
-                <p className="font-mono text-[12.5px] uppercase tracking-[0.14em] text-accent">
-                  {n.tag}
-                </p>
-                <h3 className="mt-3 text-xl font-medium leading-snug tracking-tight">
-                  {n.title}
-                </h3>
-                <p className="mt-3 text-base leading-relaxed text-muted">
-                  {n.blurb}
-                </p>
-              </div>
-            </Reveal>
-          ))}
-        </ul>
+        <div className="doc mt-12 lg:mt-16">
+          <ul className="grid gap-4 sm:grid-cols-2 lg:col-span-9 lg:col-start-4">
+            {notes.map((n, i) => (
+              <Reveal as="li" key={n.title} delay={i * 0.05}>
+                <article className="flex h-full flex-col rounded-[10px] border border-rule bg-raised p-6 transition-colors hover:border-rule-strong sm:p-7">
+                  <header className="flex items-center justify-between gap-4 border-b border-dashed border-rule pb-3 font-mono text-[11.5px] uppercase tracking-[0.08em]">
+                    <span className="text-subtle">Note {String(i + 1).padStart(2, "0")}</span>
+                    <span className="text-signal">{n.tag}</span>
+                  </header>
+                  <h3 className="display mt-5 text-[1.9rem] leading-[1.08]">{n.title}</h3>
+                  <p className="mt-4 text-[16px] leading-relaxed text-muted">{n.blurb}</p>
+                </article>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );
