@@ -7,6 +7,7 @@ import HashScroll from "@/components/HashScroll";
 import SmoothScroll from "@/components/SmoothScroll";
 import Intro from "@/components/Intro";
 import { profile } from "@/lib/content";
+import { palette } from "@/lib/palette";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -64,12 +65,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#08090c",
+  themeColor: palette.bg,
 };
 
 /* Before first paint: play the intro curtain only on the first page of a
-   session. Sets .no-intro, which hides it and zeroes the hero's delays. */
-const introScript = `try{if(sessionStorage.getItem("intro"))document.documentElement.classList.add("no-intro");else sessionStorage.setItem("intro","1")}catch(e){document.documentElement.classList.add("no-intro")}`;
+   session. Sets .no-intro, which hides it and zeroes the hero's delays.
+   The timer is a failsafe: if animation frames stall (a starved GPU, a
+   throttled tab), the curtain still comes down. */
+const introScript = `try{if(sessionStorage.getItem("intro"))document.documentElement.classList.add("no-intro");else{sessionStorage.setItem("intro","1");setTimeout(function(){document.documentElement.classList.add("intro-done")},3200)}}catch(e){document.documentElement.classList.add("no-intro")}`;
 
 export default function RootLayout({
   children,
@@ -86,7 +89,7 @@ export default function RootLayout({
         {/* Skip link — first tab stop for keyboard and screen-reader users */}
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-sm focus:text-ink"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:text-ink"
         >
           Skip to content
         </a>

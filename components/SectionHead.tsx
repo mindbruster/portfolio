@@ -3,7 +3,7 @@ import Reveal from "./Reveal";
 
 /**
  * Every section opens the same way: a numeral and small-caps label on a
- * short gold rule, then a light serif title that rises out of a mask.
+ * short accent rule, then a light serif title that rises out of a mask.
  */
 export default function SectionHead({
   n,
@@ -24,7 +24,7 @@ export default function SectionHead({
         <Reveal>
           <p className="smallcaps flex items-center gap-4">
             <span className="font-display text-[19px] tracking-[0.06em] normal-case">N° {n}</span>
-            <span aria-hidden className="h-px w-10 bg-gold/50" />
+            <span aria-hidden className="h-px w-10 bg-accent/50" />
             {eyebrow}
           </p>
         </Reveal>

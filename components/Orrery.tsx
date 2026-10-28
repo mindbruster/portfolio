@@ -9,8 +9,8 @@ export default function Orrery({ active, className = "", uid = "o" }: { active?:
   const core = `orrery-core-${uid}`;
   const ring = (i: number) =>
     active === i
-      ? { stroke: "var(--gold-bright)", strokeWidth: 2.4, filter: `url(#${glow})`, opacity: 1 }
-      : { stroke: "var(--gold)", strokeWidth: 1, opacity: active === undefined ? 0.75 : 0.32 };
+      ? { stroke: "var(--accent-bright)", strokeWidth: 2.4, filter: `url(#${glow})`, opacity: 1 }
+      : { stroke: "var(--accent)", strokeWidth: 1, opacity: active === undefined ? 0.75 : 0.32 };
 
   return (
     <svg viewBox="0 0 200 200" aria-hidden className={className} fill="none">
@@ -23,13 +23,13 @@ export default function Orrery({ active, className = "", uid = "o" }: { active?:
           </feMerge>
         </filter>
         <radialGradient id={core} cx="40%" cy="35%" r="70%">
-          <stop offset="0%" stopColor="#3a3c44" />
-          <stop offset="55%" stopColor="#111318" />
-          <stop offset="100%" stopColor="#050608" />
+          <stop offset="0%" stopColor="#3a3a3b" />
+          <stop offset="55%" stopColor="#121212" />
+          <stop offset="100%" stopColor="#050505" />
         </radialGradient>
       </defs>
       <g transform="rotate(-18 100 100)">
-        <line x1="100" y1="6" x2="100" y2="194" stroke="var(--gold)" strokeWidth="0.8" opacity="0.6" />
+        <line x1="100" y1="6" x2="100" y2="194" stroke="var(--accent)" strokeWidth="0.8" opacity="0.6" />
         <circle cx="100" cy="100" r="86" {...ring(1)} />
         <ellipse cx="100" cy="100" rx="22" ry="76" {...ring(6)} />
         <ellipse cx="100" cy="70" rx="70" ry="15" {...ring(4)} />
@@ -39,7 +39,7 @@ export default function Orrery({ active, className = "", uid = "o" }: { active?:
           <ellipse cx="100" cy="100" rx="76" ry="22" />
           <ellipse cx="100" cy="100" rx="76" ry="27" />
         </g>
-        <circle cx="100" cy="100" r="20" fill={`url(#${core})`} stroke="var(--gold)" strokeWidth="0.6" />
+        <circle cx="100" cy="100" r="20" fill={`url(#${core})`} stroke="var(--accent)" strokeWidth="0.6" />
         <ellipse cx="100" cy="100" rx="94" ry="24" {...ring(0)} />
       </g>
     </svg>

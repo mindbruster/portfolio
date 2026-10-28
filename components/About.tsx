@@ -22,7 +22,7 @@ export default function About() {
           eyebrow="About"
           title={
             <>
-              Where the difficulty <em className="gold-text font-normal">actually lives.</em>
+              Where the difficulty <em className="sheen-text font-normal">actually lives.</em>
             </>
           }
         />
@@ -42,7 +42,7 @@ export default function About() {
 
           <Reveal delay={0.1} className="lg:col-span-7 lg:pt-4">
             <p className="font-display text-[clamp(1.75rem,2.6vw,2.4rem)] leading-[1.25] font-light">{first}</p>
-            <div aria-hidden className="rule-gold my-10 w-32" />
+            <div aria-hidden className="rule-accent my-10 w-32" />
             <div className="space-y-6 text-[17px] leading-[1.8] text-muted sm:text-[18px]">
               {rest.map((para) => (
                 <p key={para}>{para}</p>
@@ -55,15 +55,15 @@ export default function About() {
         <div className="mt-28 lg:mt-36">
           <Reveal>
             <p className="smallcaps flex items-center gap-4">
-              <span aria-hidden className="h-px w-10 bg-gold/50" />
+              <span aria-hidden className="h-px w-10 bg-accent/50" />
               Working rules — each one came out of a decision in the work
             </p>
           </Reveal>
           <ol className="mt-12 grid gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
             {principles.map((p, i) => (
               <Reveal as="li" key={p.title} delay={i * 0.08}>
-                <span className="display gold-text block text-[3.5rem] leading-none font-light">{numerals[i]}</span>
-                <span aria-hidden className="mt-6 block h-px w-full bg-gradient-to-r from-gold/50 to-transparent" />
+                <span className="display sheen-text block text-[3.5rem] leading-none font-light">{numerals[i]}</span>
+                <span aria-hidden className="mt-6 block h-px w-full bg-gradient-to-r from-accent/50 to-transparent" />
                 <h3 className="display mt-6 text-[1.85rem] leading-[1.08]">{p.title}</h3>
                 <p className="mt-4 text-[15.5px] leading-relaxed text-muted">{p.body}</p>
               </Reveal>

@@ -5,7 +5,7 @@
 export default function Dial({ className = "" }: { className?: string }) {
   const ticks = Array.from({ length: 120 }, (_, i) => i);
   return (
-    <svg viewBox="0 0 400 400" aria-hidden className={className} fill="none" stroke="var(--gold)">
+    <svg viewBox="0 0 400 400" aria-hidden className={className} fill="none" stroke="var(--accent)">
       <circle cx="200" cy="200" r="198" strokeWidth="0.5" opacity="0.55" />
       <circle cx="200" cy="200" r="186" strokeWidth="0.35" opacity="0.4" />
       <circle cx="200" cy="200" r="140" strokeWidth="0.35" opacity="0.3" />

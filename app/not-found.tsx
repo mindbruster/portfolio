@@ -15,12 +15,12 @@ export default function NotFound() {
       <div className="page relative text-center">
         <p className="smallcaps">Error 404 — not on the instrument</p>
         <h1 className="display mt-6 text-[clamp(3.5rem,10vw,8rem)] font-light">
-          This page <em className="gold-text">doesn&apos;t exist.</em>
+          This page <em className="sheen-text">doesn&apos;t exist.</em>
         </h1>
         <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted">
           The link may be mistyped, or the page has moved. Everything that exists is on the home page.
         </p>
-        <Link href="/" className="btn-gold mt-10">
+        <Link href="/" className="btn-primary mt-10">
           <ArrowLeft className="size-4" aria-hidden />
           Back to the home page
         </Link>

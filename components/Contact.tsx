@@ -15,7 +15,7 @@ const channels = [
 export default function Contact() {
   return (
     <section id="contact" className="relative scroll-mt-20 overflow-hidden border-t border-line py-28 lg:py-44">
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_60%_at_50%_45%,rgb(216_181_108/0.09),transparent_70%)]" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_60%_at_50%_45%,color-mix(in_srgb,var(--accent)_9%,transparent),transparent_70%)]" />
       <div aria-hidden className="pointer-events-none absolute top-[44%] left-1/2 w-[min(980px,150vw)] -translate-x-1/2 -translate-y-1/2 opacity-60">
         <div className="spin-slow">
           <Dial />
@@ -26,14 +26,14 @@ export default function Contact() {
         <Reveal>
           <p className="smallcaps inline-flex items-center gap-4">
             <span className="font-display text-[19px] tracking-[0.06em] normal-case">N° VII</span>
-            <span aria-hidden className="h-px w-10 bg-gold/50" />
+            <span aria-hidden className="h-px w-10 bg-accent/50" />
             Contact
           </p>
         </Reveal>
         <Reveal variant="mask" delay={0.05} className="mt-8">
           <h2 className="display mx-auto text-[clamp(3.6rem,10.5vw,10rem)] leading-[0.88] font-light tracking-[-0.03em]">
             Send me <br className="hidden sm:block" />
-            <em className="gold-text font-normal">the hard part.</em>
+            <em className="sheen-text font-normal">the hard part.</em>
           </h2>
         </Reveal>
 
@@ -44,17 +44,17 @@ export default function Contact() {
         <Reveal delay={0.18} className="mt-14">
           <a
             href={`mailto:${profile.email}`}
-            className="roll-host font-display inline-block max-w-full text-[clamp(1.6rem,4vw,3.4rem)] leading-tight font-light break-all text-ivory"
+            className="roll-host font-display inline-block max-w-full text-[clamp(1.6rem,4vw,3.4rem)] leading-tight font-light break-all text-fg"
           >
             <span className="roll">
               <span>{profile.email}</span>
               <span aria-hidden>{profile.email}</span>
             </span>
-            <span aria-hidden className="mx-auto mt-2 block h-px w-full bg-gradient-to-r from-transparent via-gold to-transparent" />
+            <span aria-hidden className="mx-auto mt-2 block h-px w-full bg-gradient-to-r from-transparent via-accent to-transparent" />
           </a>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <Magnetic>
-              <a href={`mailto:${profile.email}`} className="btn-gold">
+              <a href={`mailto:${profile.email}`} className="btn-primary">
                 Write to me
                 <ArrowUpRight className="size-4" aria-hidden />
               </a>
@@ -74,7 +74,7 @@ export default function Contact() {
                   className="group flex flex-col items-center gap-1.5 px-6 py-7 transition-colors hover:bg-white/[0.02]"
                 >
                   <span className="smallcaps !text-[10px]">{c.label}</span>
-                  <span className="text-[16px] transition-colors group-hover:text-gold-bright">{c.value}</span>
+                  <span className="text-[16px] transition-colors group-hover:text-accent-bright">{c.value}</span>
                 </a>
               </li>
             ))}

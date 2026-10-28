@@ -16,7 +16,7 @@ export default function Notes() {
           eyebrow="Field notes"
           title={
             <>
-              Things that broke, <em className="gold-text font-normal">and what fixed them.</em>
+              Things that broke, <em className="sheen-text font-normal">and what fixed them.</em>
             </>
           }
           aside={
@@ -24,13 +24,13 @@ export default function Notes() {
               href={profile.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="roll-host inline-flex items-center gap-2 text-[15px] text-ivory"
+              className="roll-host inline-flex items-center gap-2 text-[15px] text-fg"
             >
               <span className="roll">
                 <span>More on LinkedIn</span>
                 <span aria-hidden>More on LinkedIn</span>
               </span>
-              <ArrowUpRight className="size-4 text-gold" aria-hidden />
+              <ArrowUpRight className="size-4 text-accent" aria-hidden />
             </a>
           }
         />
@@ -45,13 +45,13 @@ export default function Notes() {
             >
               <span
                 aria-hidden
-                className="absolute -top-px left-0 h-px w-0 bg-gradient-to-r from-gold to-transparent transition-[width] duration-700 group-hover:w-full"
+                className="absolute -top-px left-0 h-px w-0 bg-gradient-to-r from-accent to-transparent transition-[width] duration-700 group-hover:w-full"
               />
               <p className="flex items-center justify-between gap-4">
-                <span className="font-mono text-[12px] text-gold">N° {String(i + 1).padStart(2, "0")}</span>
+                <span className="font-mono text-[12px] text-accent">N° {String(i + 1).padStart(2, "0")}</span>
                 <span className="smallcaps !text-[10px] !text-subtle">{n.tag}</span>
               </p>
-              <h3 className="display mt-7 text-[clamp(1.9rem,2.6vw,2.5rem)] leading-[1.08] font-light transition-colors duration-500 group-hover:text-gold-bright">
+              <h3 className="display mt-7 text-[clamp(1.9rem,2.6vw,2.5rem)] leading-[1.08] font-light transition-colors duration-500 group-hover:text-accent-bright">
                 {n.title}
               </h3>
               <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-muted">{n.blurb}</p>

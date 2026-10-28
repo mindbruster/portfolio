@@ -28,7 +28,7 @@ export default function WorkIndex() {
           eyebrow="Selected work"
           title={
             <>
-              Seven platforms in production, <em className="gold-text font-normal">and the problems that made them hard.</em>
+              Seven platforms in production, <em className="sheen-text font-normal">and the problems that made them hard.</em>
             </>
           }
           aside={
@@ -39,7 +39,7 @@ export default function WorkIndex() {
         />
 
         <ul
-          className="mt-16 border-b border-line lg:mt-24"
+          className="work-list mt-16 border-b border-line lg:mt-24"
           onPointerMove={(e) => {
             if (e.pointerType !== "mouse") return;
             x.set(e.clientX);
@@ -53,13 +53,13 @@ export default function WorkIndex() {
                 href={`/work/${p.slug}`}
                 onPointerEnter={(e) => e.pointerType === "mouse" && setHovered(i)}
                 onFocus={() => setHovered(null)}
-                className="group relative grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-5 border-t border-line py-8 sm:grid-cols-[3.5rem_minmax(0,1fr)_auto] sm:gap-x-4 lg:grid-cols-12 lg:py-10"
+                className="work-row group relative grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-5 border-t border-line py-8 sm:grid-cols-[3.5rem_minmax(0,1fr)_auto] sm:gap-x-4 lg:grid-cols-12 lg:py-10"
               >
-                <span className="self-start pt-3 font-mono text-[12px] text-subtle transition-colors duration-500 group-hover:text-gold lg:col-span-1 lg:self-center lg:pt-0">
+                <span className="self-start pt-3 font-mono text-[12px] text-subtle transition-colors duration-500 group-hover:text-accent lg:col-span-1 lg:self-center lg:pt-0">
                   {pad(i + 1)}
                 </span>
                 <span className="lg:col-span-6">
-                  <span className="display block text-[clamp(2.5rem,5.6vw,5.6rem)] leading-[0.95] font-light transition-[transform,color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-3 group-hover:text-gold-bright">
+                  <span className="work-name display inline-block text-[clamp(2.5rem,5.6vw,5.6rem)] leading-[0.95] font-light transition-[transform,color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-3">
                     {p.name}
                   </span>
                   <span className="mt-2 block text-[15px] text-muted lg:hidden">{p.tagline}</span>
@@ -69,7 +69,7 @@ export default function WorkIndex() {
                   <span className="mt-1.5 block text-[15px] text-muted">{p.tagline}</span>
                 </span>
                 <span className="flex justify-end self-start pt-2 lg:col-span-1 lg:self-center lg:pt-0">
-                  <span className="grid size-11 place-items-center rounded-full border border-line-strong text-muted transition-all duration-500 group-hover:rotate-45 group-hover:border-gold group-hover:bg-gold group-hover:text-ink">
+                  <span className="grid size-11 place-items-center rounded-full border border-line-strong text-muted transition-all duration-500 group-hover:rotate-45 group-hover:border-accent group-hover:bg-accent group-hover:text-ink">
                     <ArrowUpRight className="size-4" aria-hidden />
                   </span>
                 </span>
@@ -87,7 +87,7 @@ export default function WorkIndex() {
                 )}
                 <span
                   aria-hidden
-                  className="absolute -bottom-px left-0 h-px w-0 bg-gradient-to-r from-gold via-gold-bright to-transparent transition-[width] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:w-full"
+                  className="absolute -bottom-px left-0 h-px w-0 bg-gradient-to-r from-accent via-accent-bright to-transparent transition-[width] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:w-full"
                 />
               </Link>
             </li>
@@ -106,7 +106,7 @@ export default function WorkIndex() {
             hovered === null ? "scale-90 rotate-[-4deg] opacity-0" : "scale-100 rotate-[-2deg] opacity-100"
           }`}
         >
-          <div className="relative aspect-[16/10] w-[440px] overflow-hidden rounded-2xl border border-line-gold bg-card shadow-[0_40px_100px_-30px_rgb(0_0_0/0.95),0_0_60px_-20px_rgb(216_181_108/0.35)]">
+          <div className="relative aspect-[16/10] w-[440px] overflow-hidden rounded-2xl border border-line-accent bg-card shadow-[0_40px_100px_-30px_rgb(0_0_0/0.95),0_0_60px_-20px_color-mix(in_srgb,var(--accent)_35%,transparent)]">
             {projects.map((p, i) =>
               p.shot ? (
                 <Image

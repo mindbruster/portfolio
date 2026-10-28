@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import type { ArmillaryHandle } from "@/lib/armillary";
-import Guilloche from "./Guilloche";
+import Orrery from "./Orrery";
 
 /**
  * The armillary sphere in a canvas, with a small label riding on each ring.
- * three.js loads only after mount; without WebGL the engraved rosette
- * stands in.
+ * three.js loads only after mount; without WebGL the flat engraving of
+ * the same instrument stands in.
  */
 export default function Armillary({
   labels,
@@ -64,9 +64,7 @@ export default function Armillary({
     <div className={`relative h-full w-full overflow-hidden ${className}`}>
       {failed ? (
         <div className="absolute inset-0 grid place-items-center">
-          <div className="fade-edge w-[min(90%,640px)]">
-            <Guilloche />
-          </div>
+          <Orrery active={active ?? undefined} uid="fallback" className="w-[min(86%,560px)]" />
         </div>
       ) : (
         <canvas
@@ -87,9 +85,9 @@ export default function Armillary({
             className="group pointer-events-none absolute top-0 left-0 opacity-0 will-change-transform"
           >
             <span className="flex -translate-x-[5px] -translate-y-1/2 items-center whitespace-nowrap group-data-[side=left]:-translate-x-[calc(100%-5px)] group-data-[side=left]:flex-row-reverse">
-              <span className="size-[10px] shrink-0 rounded-full border border-gold-bright bg-ink shadow-[0_0_14px_rgb(243_220_164/0.8)]" />
-              <span className="h-px w-7 bg-gradient-to-r from-gold-bright to-gold/30 group-data-[side=left]:bg-gradient-to-l" />
-              <span className="smallcaps rounded-full border border-line-gold bg-ink/85 px-3 py-1.5 !text-[10px] !tracking-[0.22em] !text-gold-bright backdrop-blur-md">
+              <span className="size-[10px] shrink-0 rounded-full border border-accent-bright bg-ink shadow-[0_0_14px_color-mix(in_srgb,var(--accent-bright)_80%,transparent)]" />
+              <span className="h-px w-7 bg-gradient-to-r from-accent-bright to-accent/30 group-data-[side=left]:bg-gradient-to-l" />
+              <span className="smallcaps rounded-full border border-white/15 bg-ink/80 px-3 py-1.5 !text-[10px] !tracking-[0.22em] !text-accent-bright backdrop-blur-md">
                 {l}
               </span>
             </span>

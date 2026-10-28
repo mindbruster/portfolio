@@ -1,9 +1,10 @@
 /**
- * The armillary sphere: a dark glass core (the model) inside seven gilt
+ * The armillary sphere: a dark glass core (the model) inside seven metal
  * rings (the layers built around it). Plain three.js, loaded on demand, so
  * the page paints before any 3D code arrives.
  */
 import type * as T from "three";
+import { palette, rgba } from "./palette";
 
 export type ArmillaryHandle = {
   /** Light one ring (its index in `rings`), or none. `strength` 0–1 sets how far the others step back. */
@@ -22,7 +23,8 @@ type Options = {
 };
 
 const TILT = (23.4 * Math.PI) / 180; // the ecliptic's tilt — real armillaries use it
-const BASE_GLOW = 0.07; // warmth every ring keeps, lit or not
+const BASE_GLOW = 0.07; // glow every ring keeps, lit or not
+const ink = palette.instrument;
 
 export async function createArmillary(canvas: HTMLCanvasElement, opts: Options = {}): Promise<ArmillaryHandle> {
   const THREE = await import("three");
@@ -42,11 +44,11 @@ export async function createArmillary(canvas: HTMLCanvasElement, opts: Options =
   const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 100);
   camera.position.set(0, 0.35, 14);
 
-  const key = new THREE.DirectionalLight(0xffe4b5, 2.4);
+  const key = new THREE.DirectionalLight(ink.keyLight, 2.4);
   key.position.set(5, 6, 7);
-  const rim = new THREE.DirectionalLight(0xd8b56c, 1.6);
+  const rim = new THREE.DirectionalLight(ink.rimLight, 1.6);
   rim.position.set(-7, -3, -5);
-  const fill = new THREE.DirectionalLight(0xfff1d6, 1.1);
+  const fill = new THREE.DirectionalLight(ink.fillLight, 1.1);
   fill.position.set(0, -6, 6); // from below, for the flat rings seen edge-on
   scene.add(key, rim, fill, new THREE.AmbientLight(0x2a2a2a, 0.6));
 
@@ -66,19 +68,19 @@ export async function createArmillary(canvas: HTMLCanvasElement, opts: Options =
     return d;
   };
 
-  const goldBase = new THREE.Color(0xd9b46a);
-  const goldDim = new THREE.Color(0x5e4c2c);
-  const makeGold = (roughness = 0.28) =>
+  const metalBase = new THREE.Color(ink.metal);
+  const metalDim = new THREE.Color(ink.metalDim);
+  const makeMetal = (roughness = 0.28) =>
     track(
       new THREE.MeshPhysicalMaterial({
-        color: goldBase.clone(),
+        color: metalBase.clone(),
         // Not quite pure metal: a little diffuse keeps a ring from reflecting
         // the dark half of the room and going black at some angles
         metalness: 0.9,
         roughness,
         clearcoat: 0.35,
         clearcoatRoughness: 0.25,
-        emissive: new THREE.Color(0xf3d48e),
+        emissive: new THREE.Color(ink.glow),
         emissiveIntensity: BASE_GLOW,
         transparent: true,
         opacity: 0,
@@ -98,7 +100,7 @@ export async function createArmillary(canvas: HTMLCanvasElement, opts: Options =
     anchorAngle = 0.6,
     anchorRadius = R,
   ) => {
-    const mat = makeGold();
+    const mat = makeMetal();
     const mesh = new THREE.Mesh(geo, mat);
     mesh.rotation.set(...rot);
     mesh.position.y = y;
@@ -127,7 +129,7 @@ export async function createArmillary(canvas: HTMLCanvasElement, opts: Options =
   (rings[3].mat as T.MeshPhysicalMaterial).side = THREE.DoubleSide;
 
   // Decoration that carries no layer: polar circles, axis, pole caps, ticks
-  const decoMat = makeGold(0.35);
+  const decoMat = makeMetal(0.35);
   const polarR = R * Math.cos(Math.PI / 2 - TILT);
   for (const s of [1, -1]) {
     const m = new THREE.Mesh(torus(polarR, 0.016), decoMat);
@@ -158,12 +160,12 @@ export async function createArmillary(canvas: HTMLCanvasElement, opts: Options =
   }
   sky.add(ticks);
 
-  // The core — the model: dark lacquered glass with a warm halo behind it
+  // The core — the model: black-rhodium lacquer with a soft halo behind it
   const coreMat = track(
     new THREE.MeshPhysicalMaterial({
-      color: 0x0b0c10,
+      color: ink.core,
       roughness: 0.12,
-      metalness: 0.15,
+      metalness: 0.35,
       clearcoat: 1,
       clearcoatRoughness: 0.04,
       transparent: true,
@@ -177,9 +179,9 @@ export async function createArmillary(canvas: HTMLCanvasElement, opts: Options =
   haloCanvas.width = haloCanvas.height = 256;
   const hg = haloCanvas.getContext("2d")!;
   const grad = hg.createRadialGradient(128, 128, 0, 128, 128, 128);
-  grad.addColorStop(0, "rgba(243,212,142,0.55)");
-  grad.addColorStop(0.35, "rgba(216,181,108,0.18)");
-  grad.addColorStop(1, "rgba(216,181,108,0)");
+  grad.addColorStop(0, rgba(ink.halo, 0.55));
+  grad.addColorStop(0.35, rgba(ink.halo, 0.18));
+  grad.addColorStop(1, rgba(ink.halo, 0));
   hg.fillStyle = grad;
   hg.fillRect(0, 0, 256, 256);
   const haloTex = track(new THREE.CanvasTexture(haloCanvas));
@@ -191,7 +193,7 @@ export async function createArmillary(canvas: HTMLCanvasElement, opts: Options =
   halo.scale.setScalar(4.2);
   frame.add(halo);
 
-  // Gold dust drifting round the instrument
+  // Dust drifting round the instrument
   const dustGeo = track(new THREE.BufferGeometry());
   const N = 520;
   const pos = new Float32Array(N * 3);
@@ -203,7 +205,7 @@ export async function createArmillary(canvas: HTMLCanvasElement, opts: Options =
   }
   dustGeo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
   const dustMat = track(
-    new THREE.PointsMaterial({ color: 0xe9cf93, size: 0.03, transparent: true, opacity: 0, depthWrite: false, sizeAttenuation: true }),
+    new THREE.PointsMaterial({ color: ink.dust, size: 0.03, transparent: true, opacity: 0, depthWrite: false, sizeAttenuation: true }),
   );
   const dust = new THREE.Points(dustGeo, dustMat);
   scene.add(dust);
@@ -262,10 +264,10 @@ export async function createArmillary(canvas: HTMLCanvasElement, opts: Options =
       // Highlight: the active ring glows, the others step back
       const target = active === null ? 0 : active === rings.indexOf(r) ? 1 : -1;
       r.glow += (target - r.glow) * Math.min(1, dt * 5);
-      r.mat.emissiveIntensity = BASE_GLOW * (1 - Math.max(0, -r.glow) * 0.5 * strength) + Math.max(0, r.glow) * (0.45 + 0.5 * strength);
-      r.mat.color.copy(goldBase).lerp(goldDim, Math.max(0, -r.glow) * 0.85 * strength);
+      r.mat.emissiveIntensity = BASE_GLOW * (1 - Math.max(0, -r.glow) * 0.5 * strength) + Math.max(0, r.glow) * (0.65 + 0.55 * strength);
+      r.mat.color.copy(metalBase).lerp(metalDim, Math.max(0, -r.glow) * 0.6 * strength);
       // Rings that step back also thin out, so the lit one carries the eye
-      r.mat.opacity = e * (1 - Math.max(0, -r.glow) * 0.55 * strength);
+      r.mat.opacity = e * (1 - Math.max(0, -r.glow) * 0.35 * strength);
     }
     // Decoration steps back with the unlit rings
     const decoTarget = Math.min(0.85, Math.max(0, (enter - 1) / 1)) * (active === null ? 1 : 1 - 0.55 * strength);
@@ -300,11 +302,16 @@ export async function createArmillary(canvas: HTMLCanvasElement, opts: Options =
       const front = THREE.MathUtils.clamp((-depth - (dist - 2.2)) / -4.4 + 1, 0, 1);
       const shown = ring.mat.opacity;
       el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
-      // Labels on the right half point left, so none runs off the screen
-      const side = x > width * 0.55 ? "left" : "right";
+      // Point the label whichever way has room, keeping 16px clear of both
+      // edges; if neither side fits (a narrow phone), don't show it at all
+      const w = el.firstElementChild instanceof HTMLElement ? el.firstElementChild.offsetWidth : 0;
+      const fitsRight = x + w + 16 <= width;
+      const fitsLeft = x - w - 16 >= 0;
+      const side = fitsRight ? "right" : "left";
       if (el.dataset.side !== side) el.dataset.side = side;
+      const fits = fitsRight || fitsLeft;
       // Only the lit ring is named, so the instrument never reads as a diagram
-      el.style.opacity = String(shown * (active === i ? 0.55 + 0.45 * front : 0));
+      el.style.opacity = String(fits ? shown * (active === i ? 0.55 + 0.45 * front : 0) : 0);
     }
 
     if (!ready) {

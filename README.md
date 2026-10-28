@@ -6,12 +6,14 @@ the decisions.
 
 The design argues one idea — *the model is the easy part* — through one object:
 an **armillary sphere** rendered live in three.js. The dark glass core is the
-model; the seven gilt rings are the layers built around it (safety, memory,
+model; the seven metal rings are the layers built around it (safety, memory,
 retrieval, routing, fulfilment, cost, ledger), each from a real project. The
 sphere stays pinned while the "seven layers" section scrolls past, and the ring
-under discussion lights up. Around it the page is deliberately quiet: deep ink,
-ivory type, champagne gold, hairline rules, an editorial work index with
-pointer-following previews, and Lenis smooth scrolling.
+under discussion lights up. Around it the page is deliberately quiet:
+obsidian black, cool white type and platinum (the only "colour" is metal),
+hairline rules, an editorial work index with pointer-following previews, and
+Lenis smooth scrolling. The logo is the same idea in miniature: a jewel core
+inside a ring and meridian on a polar axis.
 
 Type: Cormorant Garamond (display), Geist (text), Geist Mono (technical labels).
 
@@ -48,10 +50,10 @@ components/
   Orrery.tsx             the sphere as a flat SVG engraving (phones, case studies)
   WorkIndex.tsx          editorial project list with a floating preview
   Intro.tsx              first-visit curtain (CSS only)
-  Guilloche.tsx          engraved rosette — used in the seal and as fallback
-  Seal.tsx               the monogram seal (large emblem, small logo)
+  Mark.tsx               the logo — a small armillary (header, footer, intro)
+  Seal.tsx               the About emblem: a struck coin with the mark inside
   Dial.tsx               hairline instrument dial behind the contact close
-  Pipeline.tsx           architecture diagram, gold lozenges on a line
+  Pipeline.tsx           architecture diagram, lozenges on a line
   Frame.tsx              screenshot in a browser window
   SectionHead.tsx        numeral, rule and serif title for each section
   WordReveal.tsx         paragraph that brightens word by word on scroll
@@ -63,6 +65,7 @@ components/
 lib/
   content.ts             all copy, project data and the seven `layers`
   armillary.ts           the three.js scene, loaded on demand
+  palette.ts             colours for three.js, share images and theme colour
   og.tsx                 shared template for the link-preview images
   og-fonts/              Cormorant Garamond TTFs for those images (OFL)
 public/
@@ -118,8 +121,14 @@ They live in `public/shots/`. Two rules:
 
 Things that will bite you if you assume otherwise:
 
+- **Colours live in two places, and only two.** The `:root` block at the top of
+  `app/globals.css` sets every page colour as a token (`--ink`, `--fg`,
+  `--accent`, …; Tailwind sees them as `bg-ink`, `text-accent`, …), and
+  `lib/palette.ts` carries the same values for three.js, the share images and
+  the browser theme colour. Components never hard-code a colour, so a new
+  palette is a change to those two files plus `app/icon.svg`.
 - **Tailwind v4 configures from CSS.** Colours are CSS variables on `:root`,
-  exposed to Tailwind through `@theme inline` (`bg-ink`, `text-gold`, …).
+  exposed to Tailwind through `@theme inline` (`bg-ink`, `text-accent`, …).
   There is no `tailwind.config.ts`, and adding one back does nothing.
 - **Masked reveals trigger on the clipping box.** Content that starts clipped
   away can never report itself as in view, so `Reveal variant="mask"` puts the
@@ -131,7 +140,7 @@ Things that will bite you if you assume otherwise:
   lingering transform made the work preview position itself off-screen.
 - **The sphere degrades.** three.js loads after first paint, pauses when
   off-screen or the tab is hidden, holds still under reduced motion, and falls
-  back to the engraved rosette if WebGL is unavailable.
+  back to a flat engraving of the same instrument (`Orrery`) without WebGL.
 - **Navigation uses root-relative hashes** (`/#work`). A bare `#work` resolves
   against the current URL, so from `/work/[slug]` it silently does nothing.
 - **The hero is a server component** using CSS keyframes rather than Framer

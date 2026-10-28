@@ -2,14 +2,12 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { profile } from "@/lib/content";
+import { palette, rgba } from "@/lib/palette";
 
-/** Shared look for every link-preview image: ink, ivory and gold. */
+/** Shared look for every link-preview image, in the site's palette. */
 export const ogSize = { width: 1200, height: 630 };
 
-const ink = "#08090c";
-const ivory = "#ede7da";
-const muted = "#a9a395";
-const gold = "#d8b56c";
+const { bg, fg, muted, accent } = palette;
 
 async function fonts() {
   const dir = join(process.cwd(), "lib/og-fonts");
@@ -23,39 +21,50 @@ async function fonts() {
   ];
 }
 
-/* The site's rosette as SVG paths (the live site draws it on a canvas). */
-function ring(c: number, u: number, R: number, A: number, n: number, K: number) {
-  const out: string[] = [];
-  for (let k = 0; k < K; k++) {
-    const ph = (k / K) * ((2 * Math.PI) / n);
-    let d = "";
-    for (let i = 0; i <= 480; i++) {
-      const t = (i / 480) * Math.PI * 2;
-      const r = (R + A * Math.sin(n * t)) * u;
-      d += `${i ? "L" : "M"}${(c + r * Math.cos(t + ph)).toFixed(1)} ${(c + r * Math.sin(t + ph)).toFixed(1)}`;
-    }
-    out.push(d);
-  }
-  return out;
+/* The logo (components/Mark.tsx), with the palette's literal colours —
+   CSS variables don't exist inside the image renderer. */
+function LogoMark({ size }: { size: number }) {
+  const { accentBright } = palette;
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none" strokeLinecap="round">
+      <g transform="rotate(-28 20 20)">
+        <line x1="20" y1="0.9" x2="20" y2="39.1" stroke={accent} strokeWidth="0.9" strokeOpacity="0.7" />
+        <circle cx="20" cy="0.9" r="1.1" fill={accent} />
+        <circle cx="20" cy="39.1" r="1.1" fill={accent} />
+        <ellipse cx="20" cy="20" rx="4.4" ry="17.4" stroke={accent} strokeWidth="1.2" strokeOpacity="0.55" />
+        <path d="M2.4 20 A17.6 4.6 0 0 1 37.6 20" stroke={accentBright} strokeWidth="2" />
+        <circle cx="20" cy="20" r="6.4" fill={accent} />
+        <circle cx="18.3" cy="18.2" r="2.2" fill={accentBright} opacity="0.75" />
+        <path d="M28.26 24.06 A17.6 4.6 0 0 1 11.74 24.06" stroke={bg} strokeWidth="4.4" strokeLinecap="butt" />
+        <path d="M2.4 20 A17.6 4.6 0 0 0 37.6 20" stroke={accentBright} strokeWidth="2" />
+      </g>
+    </svg>
+  );
 }
-function spiro(c: number, u: number) {
-  const R = 0.278 * u, r = 0.1 * u, d = 0.211 * u;
-  let p = "";
-  const steps = 2600;
-  for (let i = 0; i <= steps; i++) {
-    const t = (i / steps) * Math.PI * 2 * 9;
-    const x = c + (R - r) * Math.cos(t) + d * Math.cos(((R - r) / r) * t);
-    const y = c + (R - r) * Math.sin(t) - d * Math.sin(((R - r) / r) * t);
-    p += `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`;
-  }
-  return p;
+
+/* The armillary as an engraving — the same instrument as the hero, flat. */
+const S = 640;
+function Instrument() {
+  const ring = { fill: "none", stroke: accent, strokeWidth: 1.3 };
+  return (
+    <svg width={S} height={S} viewBox="0 0 200 200">
+      <g transform="rotate(-18 100 100)">
+        <line x1="100" y1="6" x2="100" y2="194" stroke={accent} strokeWidth="0.8" strokeOpacity="0.6" />
+        <circle cx="100" cy="100" r="86" {...ring} strokeOpacity="0.75" />
+        <ellipse cx="100" cy="100" rx="22" ry="76" {...ring} strokeOpacity="0.55" />
+        <ellipse cx="100" cy="70" rx="70" ry="15" {...ring} strokeOpacity="0.5" />
+        <ellipse cx="100" cy="130" rx="70" ry="15" {...ring} strokeOpacity="0.5" />
+        <ellipse cx="100" cy="100" rx="76" ry="18" {...ring} strokeOpacity="0.7" />
+        <g transform="rotate(-24 100 100)">
+          <ellipse cx="100" cy="100" rx="76" ry="22" {...ring} strokeOpacity="0.6" />
+          <ellipse cx="100" cy="100" rx="76" ry="27" {...ring} strokeOpacity="0.6" />
+        </g>
+        <circle cx="100" cy="100" r="20" fill={bg} stroke={accent} strokeWidth="0.8" />
+        <ellipse cx="100" cy="100" rx="94" ry="24" {...ring} strokeWidth="1.8" strokeOpacity="0.95" />
+      </g>
+    </svg>
+  );
 }
-const S = 760;
-const rosette = [
-  ...ring(S / 2, S / 2, 0.745, 0.2, 15, 12).map((d) => ({ d, o: 0.3 })),
-  ...ring(S / 2, S / 2, 0.455, 0.115, 11, 10).map((d) => ({ d, o: 0.36 })),
-  { d: spiro(S / 2, S / 2), o: 0.6 },
-];
 
 export async function ogCard({
   eyebrow,
@@ -76,8 +85,8 @@ export async function ogCard({
           height: "100%",
           display: "flex",
           position: "relative",
-          background: ink,
-          color: ivory,
+          background: bg,
+          color: fg,
           fontFamily: "Cormorant",
           overflow: "hidden",
         }}
@@ -85,27 +94,22 @@ export async function ogCard({
         <div
           style={{
             position: "absolute",
-            right: -200,
-            top: -65,
+            right: -150,
+            top: -5,
             width: S,
             height: S,
             display: "flex",
-            backgroundImage: "radial-gradient(circle, rgba(216,181,108,0.16), rgba(8,9,12,0) 65%)",
+            backgroundImage: `radial-gradient(circle, ${rgba(accent, 0.16)}, ${rgba(bg, 0)} 62%)`,
           }}
         >
-          <svg width={S} height={S} viewBox={`0 0 ${S} ${S}`}>
-            {rosette.map((r, i) => (
-              <path key={i} d={r.d} fill="none" stroke={gold} strokeOpacity={r.o} strokeWidth={0.9} />
-            ))}
-            <circle cx={S / 2} cy={S / 2} r={S * 0.48} fill="none" stroke={gold} strokeOpacity={0.35} strokeWidth={1} />
-          </svg>
+          <Instrument />
         </div>
         <div
           style={{
             position: "absolute",
             inset: 0,
             display: "flex",
-            backgroundImage: "linear-gradient(90deg, rgba(8,9,12,1) 38%, rgba(8,9,12,0.2) 75%, rgba(8,9,12,0) 100%)",
+            backgroundImage: `linear-gradient(90deg, ${rgba(bg, 1)} 38%, ${rgba(bg, 0.2)} 75%, ${rgba(bg, 0)} 100%)`,
           }}
         />
 
@@ -120,25 +124,10 @@ export async function ogCard({
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 54,
-                height: 54,
-                borderRadius: 999,
-                border: `1.5px solid ${gold}`,
-                color: gold,
-                fontSize: 26,
-                letterSpacing: -2,
-              }}
-            >
-              AA
-            </div>
+            <LogoMark size={60} />
             <div style={{ display: "flex", flexDirection: "column" }}>
               <span style={{ fontSize: 30 }}>{profile.name}</span>
-              <span style={{ fontSize: 17, letterSpacing: 5, color: gold }}>{eyebrow.toUpperCase()}</span>
+              <span style={{ fontSize: 17, letterSpacing: 5, color: accent }}>{eyebrow.toUpperCase()}</span>
             </div>
           </div>
 
@@ -150,7 +139,7 @@ export async function ogCard({
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 24, color: muted }}>
-            <div style={{ width: 56, height: 1, background: gold, display: "flex" }} />
+            <div style={{ width: 56, height: 1, background: accent, display: "flex" }} />
             {host}
           </div>
         </div>
@@ -162,5 +151,5 @@ export async function ogCard({
 
 /** Gilt italic run inside an OG headline */
 export function Accent({ children }: { children: React.ReactNode }) {
-  return <span style={{ fontStyle: "italic", color: gold }}>{children}</span>;
+  return <span style={{ fontStyle: "italic", color: accent }}>{children}</span>;
 }

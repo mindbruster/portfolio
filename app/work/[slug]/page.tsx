@@ -37,7 +37,7 @@ function Part({ n, title, wide = false, children }: { n: number; title: string; 
       <div className={`grid gap-8 ${wide ? "" : "lg:grid-cols-12 lg:gap-12"}`}>
         <Reveal className={wide ? "" : "lg:col-span-4"}>
           <h2 className="flex items-baseline gap-4 lg:sticky lg:top-28">
-            <span className="display gold-text text-[3.25rem] leading-none">{numerals[n - 1]}</span>
+            <span className="display sheen-text text-[3.25rem] leading-none">{numerals[n - 1]}</span>
             <span className="smallcaps">{title}</span>
           </h2>
         </Reveal>
@@ -64,26 +64,26 @@ export default async function CaseStudy({ params }: Params) {
 
   return (
     <main id="main" className="relative overflow-hidden pt-[72px]">
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[80vh] bg-[radial-gradient(45%_55%_at_80%_20%,rgb(216_181_108/0.1),transparent_70%)]" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[80vh] bg-[radial-gradient(45%_55%_at_80%_20%,color-mix(in_srgb,var(--accent)_10%,transparent),transparent_70%)]" />
       {/* This project's ring, lit in the engraved instrument */}
-      <div aria-hidden className="pointer-events-none absolute top-[13rem] right-[-4rem] hidden w-[400px] opacity-90 lg:block xl:right-0">
+      <div aria-hidden className="pointer-events-none absolute top-[11.5rem] right-[-3rem] hidden w-[340px] opacity-90 lg:block xl:right-[1rem]">
         <Orrery active={ring >= 0 ? ring : undefined} uid="case" className="rise w-full" />
       </div>
 
       <article className="page relative">
         <header className="pt-10 pb-14 lg:pt-16 lg:pb-20">
           <div className="rise flex flex-wrap items-center justify-between gap-4 text-[14px]">
-            <Link href={`/#work-${project.slug}`} className="inline-flex items-center gap-2 text-muted transition-colors hover:text-gold-bright">
+            <Link href={`/#work-${project.slug}`} className="inline-flex items-center gap-2 text-muted transition-colors hover:text-accent-bright">
               <ArrowLeft className="size-4" aria-hidden />
               All work
             </Link>
             <span className="smallcaps !text-subtle">
-              Case study <span className="text-gold">N° {pad(index + 1)}</span> / {pad(projects.length)}
+              Case study <span className="text-accent">N° {pad(index + 1)}</span> / {pad(projects.length)}
             </span>
           </div>
 
           <p className="smallcaps rise mt-14 flex items-center gap-3 lg:mt-20" style={{ animationDelay: "80ms" }}>
-            <span aria-hidden className="h-px w-10 bg-gold/50" />
+            <span aria-hidden className="h-px w-10 bg-accent/50" />
             {project.layer}
             {ring >= 0 && <span className="text-subtle">· ring {numerals[ring]} of the instrument</span>}
           </p>
@@ -162,7 +162,7 @@ export default async function CaseStudy({ params }: Params) {
 
         <Part n={++part} title="The problem">
           <blockquote className="font-display relative max-w-4xl text-[clamp(2rem,3.8vw,3.25rem)] leading-[1.12] italic">
-            <span aria-hidden className="gold-text absolute -top-8 -left-1 text-[5rem] leading-none not-italic lg:-left-10">
+            <span aria-hidden className="sheen-text absolute -top-8 -left-1 text-[5rem] leading-none not-italic lg:-left-10">
               &ldquo;
             </span>
             {project.problem}
@@ -173,7 +173,7 @@ export default async function CaseStudy({ params }: Params) {
           <ol className="space-y-4">
             {project.built.map((b, i) => (
               <li key={b} className="glass flex gap-5 rounded-2xl p-5 sm:p-6">
-                <span className="display gold-text w-8 shrink-0 text-[1.9rem] leading-none">{pad(i + 1)}</span>
+                <span className="display sheen-text w-8 shrink-0 text-[1.9rem] leading-none">{pad(i + 1)}</span>
                 <span className="text-[17px] leading-relaxed sm:text-[18px]">{b}</span>
               </li>
             ))}
@@ -203,7 +203,7 @@ export default async function CaseStudy({ params }: Params) {
           <ul className="space-y-0 divide-y divide-line border-y border-line">
             {study.outcome.map((o) => (
               <li key={o} className="flex gap-5 py-5 text-[17px] leading-relaxed sm:text-[19px]">
-                <span aria-hidden className="mt-[0.55em] size-[9px] shrink-0 rotate-45 bg-gold" />
+                <span aria-hidden className="mt-[0.55em] size-[9px] shrink-0 rotate-45 bg-accent" />
                 {o}
               </li>
             ))}
@@ -216,14 +216,14 @@ export default async function CaseStudy({ params }: Params) {
           <Link href={`/work/${next.slug}`} className="group page grid items-center gap-10 py-20 lg:grid-cols-12 lg:py-28">
             <div className="lg:col-span-6">
               <p className="smallcaps flex items-center gap-3">
-                Next case study <span aria-hidden className="h-px w-10 bg-gold/50" /> N° {pad(projects.indexOf(next) + 1)}
+                Next case study <span aria-hidden className="h-px w-10 bg-accent/50" /> N° {pad(projects.indexOf(next) + 1)}
               </p>
-              <p className="display mt-6 text-[clamp(3.25rem,8vw,7rem)] font-light transition-colors duration-500 group-hover:text-gold-bright">
+              <p className="display mt-6 text-[clamp(3.25rem,8vw,7rem)] font-light transition-colors duration-500 group-hover:text-accent-bright">
                 {next.name}
               </p>
               <p className="mt-4 flex items-center gap-3 text-lg text-muted">
                 {next.tagline}
-                <ArrowRight className="size-5 text-gold transition-transform duration-500 group-hover:translate-x-2" aria-hidden />
+                <ArrowRight className="size-5 text-accent transition-transform duration-500 group-hover:translate-x-2" aria-hidden />
               </p>
             </div>
             {next.shot && (

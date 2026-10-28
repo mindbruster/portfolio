@@ -17,7 +17,7 @@ export default function Stats() {
               } ${i === 2 ? "lg:border-l lg:pl-10" : ""}`}
             >
               <dt className="max-w-[14rem] text-[14.5px] leading-snug text-muted">{s.label}</dt>
-              <dd className="display gold-text text-[clamp(3.6rem,6.4vw,6rem)] leading-none font-light">
+              <dd className="display sheen-text text-[clamp(3.6rem,6.4vw,6rem)] leading-none font-light">
                 <CountUp value={s.value} />
               </dd>
             </Reveal>

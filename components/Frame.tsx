@@ -3,7 +3,7 @@ import Image from "next/image";
 type Shot = { src: string; alt: string; w: number; h: number };
 
 /**
- * A screenshot in a dark browser window with a gold-lit edge. The address
+ * A screenshot in a dark browser window with an accent-lit edge. The address
  * bar carries the live domain, or says plainly there isn't one.
  */
 export default function Frame({
@@ -21,7 +21,7 @@ export default function Frame({
 }) {
   return (
     <div
-      className={`overflow-hidden rounded-[14px] border border-line-strong bg-[#0b0c10] shadow-[0_0_0_1px_rgb(216_181_108/0.06),0_40px_100px_-40px_rgb(0_0_0/0.95),0_0_80px_-30px_rgb(216_181_108/0.25)] ${className}`}
+      className={`overflow-hidden rounded-[14px] border border-line-strong bg-raised shadow-[0_0_0_1px_color-mix(in_srgb,var(--accent)_6%,transparent),0_40px_100px_-40px_rgb(0_0_0/0.95),0_0_80px_-30px_color-mix(in_srgb,var(--accent)_25%,transparent)] ${className}`}
     >
       <div className="grid grid-cols-[3.5rem_1fr_3.5rem] items-center border-b border-line bg-white/[0.02] px-3.5 py-2.5">
         <span className="flex gap-1.5" aria-hidden>
@@ -30,7 +30,7 @@ export default function Frame({
           <span className="size-2.5 rounded-full bg-white/10" />
         </span>
         <span className="mx-auto flex max-w-full items-center gap-1.5 truncate rounded-full border border-line bg-ink/60 px-3 py-0.5 font-mono text-[11px] text-subtle">
-          <span className="size-1 rounded-full bg-gold/70" aria-hidden />
+          <span className="size-1 rounded-full bg-accent/70" aria-hidden />
           {address}
         </span>
       </div>

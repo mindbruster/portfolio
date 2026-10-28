@@ -16,7 +16,7 @@ export default function Experience() {
           eyebrow="Experience"
           title={
             <>
-              Where the work <em className="gold-text font-normal">happened.</em>
+              Where the work <em className="sheen-text font-normal">happened.</em>
             </>
           }
         />
@@ -30,12 +30,12 @@ export default function Experience() {
               </div>
               <div className="lg:col-span-9">
                 <h3 className="display text-[clamp(2rem,3.2vw,2.9rem)] leading-[1.04] font-light">{e.title}</h3>
-                <p className="mt-2 text-[16px] text-gold-bright/90">{e.org}</p>
+                <p className="mt-2 text-[16px] text-accent-bright/90">{e.org}</p>
                 {e.points.length > 0 && (
                   <ul className="mt-7 grid max-w-4xl gap-x-10 gap-y-3 md:grid-cols-2">
                     {e.points.map((pt) => (
                       <li key={pt} className="relative pl-6 text-[15.5px] leading-relaxed text-muted">
-                        <span aria-hidden className="absolute top-[0.62em] left-0 size-[5px] rotate-45 bg-gold/80" />
+                        <span aria-hidden className="absolute top-[0.62em] left-0 size-[5px] rotate-45 bg-accent/80" />
                         {pt}
                       </li>
                     ))}
@@ -50,7 +50,7 @@ export default function Experience() {
         <div className="mt-28 lg:mt-36">
           <Reveal>
             <p className="smallcaps flex items-center gap-4">
-              <span aria-hidden className="h-px w-10 bg-gold/50" />
+              <span aria-hidden className="h-px w-10 bg-accent/50" />
               The toolkit — what the systems above are made of
             </p>
           </Reveal>
@@ -66,7 +66,7 @@ export default function Experience() {
                     <span key={item}>
                       {item}
                       {j < g.items.length - 1 && (
-                        <span aria-hidden className="mx-2 text-gold/50">
+                        <span aria-hidden className="mx-2 text-accent/50">
                           ·
                         </span>
                       )}{" "}
