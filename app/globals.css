@@ -214,18 +214,6 @@ html.lenis body {
       0 40px 90px -40px rgb(0 0 0 / 0.9);
   }
 
-  /* Denser glass for cards that sit on the rosette and carry small text */
-  .glass-solid {
-    background: linear-gradient(180deg, rgb(24 26 32 / 0.9), rgb(13 14 18 / 0.94));
-    border: 1px solid var(--line-strong);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    box-shadow:
-      inset 0 1px 0 rgb(243 220 164 / 0.08),
-      0 50px 100px -40px rgb(0 0 0 / 0.95),
-      0 0 60px -20px rgb(216 181 108 / 0.18);
-  }
-
   /* Solid card with a gold-tinted top edge */
   .plate {
     position: relative;
@@ -325,31 +313,6 @@ html.lenis body {
     animation: spin-slow 240s linear infinite;
   }
 
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-  .float {
-    animation: float 7s ease-in-out infinite;
-  }
-
-  @keyframes marquee {
-    to {
-      transform: translateX(-50%);
-    }
-  }
-  .marquee {
-    animation: marquee 48s linear infinite;
-  }
-  .marquee-wrap:hover .marquee {
-    animation-play-state: paused;
-  }
-
   @keyframes pulse-gold {
     0%,
     100% {
@@ -361,29 +324,6 @@ html.lenis body {
   }
   .pulse-gold {
     animation: pulse-gold 2.6s ease-in-out infinite;
-  }
-
-  /* A trace span drawing itself from its start time */
-  @keyframes draw {
-    from {
-      transform: scaleX(0);
-    }
-    to {
-      transform: scaleX(1);
-    }
-  }
-  .draw {
-    transform-origin: left center;
-    animation: draw 0.7s cubic-bezier(0.65, 0, 0.35, 1) both;
-  }
-
-  .hatch {
-    background-color: #4a4740;
-    background-image: repeating-linear-gradient(-45deg, transparent 0 4px, rgb(255 255 255 / 0.12) 4px 6px);
-  }
-
-  .gold-bar {
-    background-image: linear-gradient(90deg, #a8843f, #e3c27c 60%, #f3dca4);
   }
 
   /* Film grain — keeps the large dark fields from looking flat */
@@ -398,11 +338,93 @@ html.lenis body {
   }
 }
 
-/* Work plates stack like a deck: each pins a little lower than the last.
-   Only where the window is tall enough that a pinned plate is never cropped. */
-@media (min-width: 1024px) and (min-height: 820px) {
-  .stack-card {
-    position: sticky;
-    top: calc(92px + var(--i) * 14px);
+
+/* ---------------------------------------------------------------
+   Intro curtain: the seal, the name, a gold rule filling — then the
+   curtain lifts. First load of a session only; CSS alone ends it, so it
+   can never trap the page if a script fails.
+   --------------------------------------------------------------- */
+:root {
+  --intro: 1.25s;
+}
+.no-intro {
+  --intro: 0s;
+}
+.no-intro .intro {
+  display: none;
+}
+.intro {
+  animation: intro-lift 1s cubic-bezier(0.76, 0, 0.24, 1) var(--intro) forwards;
+}
+.intro-bar {
+  transform-origin: left center;
+  animation: intro-bar 1.05s cubic-bezier(0.65, 0, 0.35, 1) 0.1s both;
+}
+.intro-mark {
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes intro-lift {
+  to {
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
   }
+}
+@keyframes intro-bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+}
+
+/* Link text that rolls up to a gold copy on hover */
+.roll {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.roll > span {
+  display: block;
+  transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.roll > span + span {
+  position: absolute;
+  inset: 0;
+  transform: translateY(100%);
+  color: var(--gold-bright);
+}
+.roll-host:hover .roll > span:first-child {
+  transform: translateY(-100%);
+}
+.roll-host:hover .roll > span + span {
+  transform: none;
+}
+
+/* Screenshots toned to the palette at rest; full colour on hover */
+.duo {
+  filter: grayscale(1) sepia(0.32) brightness(0.8) contrast(1.06);
+  transition: filter 0.9s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .duo {
+  filter: none;
+}
+
+
+/* Route arrival. Opacity only, and no fill afterwards: a lingering
+   transform would turn this wrapper into the containing block for every
+   position:fixed element inside it (the work preview, for one). */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+  }
+}
+.page-enter {
+  animation: page-enter 0.7s ease-out backwards;
 }

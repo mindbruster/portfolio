@@ -4,9 +4,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
-import { addressOf, numerals, projects } from "@/lib/content";
+import { addressOf, layers, numerals, projects } from "@/lib/content";
 import Frame from "@/components/Frame";
-import Guilloche from "@/components/Guilloche";
+import Orrery from "@/components/Orrery";
 import Pipeline from "@/components/Pipeline";
 import Reveal from "@/components/Reveal";
 
@@ -57,18 +57,17 @@ export default async function CaseStudy({ params }: Params) {
 
   const { study } = project;
   const address = addressOf(project);
+  const ring = layers.findIndex((l) => l.slug === project.slug);
   // Wraps around, so the last case study still points somewhere.
   const next = [...projects.slice(index + 1), ...projects.slice(0, index)].find((p) => p.study);
   let part = 0;
 
   return (
     <main id="main" className="relative overflow-hidden pt-[72px]">
-      <div aria-hidden className="pointer-events-none absolute top-[-14rem] right-[-30rem] w-[900px] opacity-70 lg:right-[-16rem]">
-        <div className="fade-edge">
-          <div className="spin-slow">
-            <Guilloche />
-          </div>
-        </div>
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[80vh] bg-[radial-gradient(45%_55%_at_80%_20%,rgb(216_181_108/0.1),transparent_70%)]" />
+      {/* This project's ring, lit in the engraved instrument */}
+      <div aria-hidden className="pointer-events-none absolute top-[13rem] right-[-4rem] hidden w-[400px] opacity-90 lg:block xl:right-0">
+        <Orrery active={ring >= 0 ? ring : undefined} uid="case" className="rise w-full" />
       </div>
 
       <article className="page relative">
@@ -86,8 +85,9 @@ export default async function CaseStudy({ params }: Params) {
           <p className="smallcaps rise mt-14 flex items-center gap-3 lg:mt-20" style={{ animationDelay: "80ms" }}>
             <span aria-hidden className="h-px w-10 bg-gold/50" />
             {project.layer}
+            {ring >= 0 && <span className="text-subtle">· ring {numerals[ring]} of the instrument</span>}
           </p>
-          <h1 className="display mt-6 text-[clamp(4rem,12.5vw,11rem)] leading-[0.88] tracking-[-0.025em]">
+          <h1 className="display mt-6 text-[clamp(4rem,11.5vw,10rem)] leading-[0.88] font-light tracking-[-0.03em]">
             <span className="line-mask">
               <span style={{ animationDelay: "120ms" }}>{project.name}</span>
             </span>
@@ -218,7 +218,7 @@ export default async function CaseStudy({ params }: Params) {
               <p className="smallcaps flex items-center gap-3">
                 Next case study <span aria-hidden className="h-px w-10 bg-gold/50" /> N° {pad(projects.indexOf(next) + 1)}
               </p>
-              <p className="display mt-6 text-[clamp(3.25rem,8vw,7rem)] transition-colors duration-500 group-hover:text-gold-bright">
+              <p className="display mt-6 text-[clamp(3.25rem,8vw,7rem)] font-light transition-colors duration-500 group-hover:text-gold-bright">
                 {next.name}
               </p>
               <p className="mt-4 flex items-center gap-3 text-lg text-muted">
@@ -234,7 +234,7 @@ export default async function CaseStudy({ params }: Params) {
                   width={next.shot.w}
                   height={next.shot.h}
                   sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="h-auto w-full opacity-70 transition-[opacity,transform] duration-700 group-hover:scale-[1.03] group-hover:opacity-100"
+                  className="duo h-auto w-full group-hover:scale-[1.03]"
                 />
               </div>
             )}

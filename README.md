@@ -4,13 +4,14 @@ Personal site for an AI engineer working on production LLM systems. Built around
 evidence: live products, case studies with architecture, and the reasoning behind
 the decisions.
 
-The design argues one idea — *the model is the easy part* — and is set like an
-engraved certificate: deep ink, ivory type, champagne gold, small capitals and
-roman-numeral sections. Its signature is a guilloche rosette (the engraving on
-banknotes and watch dials), drawn procedurally on a canvas and revealed with an
-engraving sweep. The hero card is a request trace where every gold span is a
-layer built in one of the projects and the one grey span is the model. Work is a
-deck of plates that stack as you scroll; scrolling is smoothed with Lenis.
+The design argues one idea — *the model is the easy part* — through one object:
+an **armillary sphere** rendered live in three.js. The dark glass core is the
+model; the seven gilt rings are the layers built around it (safety, memory,
+retrieval, routing, fulfilment, cost, ledger), each from a real project. The
+sphere stays pinned while the "seven layers" section scrolls past, and the ring
+under discussion lights up. Around it the page is deliberately quiet: deep ink,
+ivory type, champagne gold, hairline rules, an editorial work index with
+pointer-following previews, and Lenis smooth scrolling.
 
 Type: Cormorant Garamond (display), Geist (text), Geist Mono (technical labels).
 
@@ -41,19 +42,27 @@ app/
   globals.css            design tokens for both themes + component classes
   icon.svg               favicon, alongside favicon.ico and apple-icon.png
 components/
-  Header  Hero  Marquee  Work  About  Experience  Notes  Contact  Footer
-  Guilloche.tsx          the engraved rosette, drawn once to a canvas
+  Header  Stage  Stats  WorkIndex  About  Experience  Notes  Contact  Footer
+  Stage.tsx              hero, thesis and the seven layers, beside the sphere
+  Armillary.tsx          React wrapper for the 3D sphere (+ ring labels)
+  Orrery.tsx             the sphere as a flat SVG engraving (phones, case studies)
+  WorkIndex.tsx          editorial project list with a floating preview
+  Intro.tsx              first-visit curtain (CSS only)
+  Guilloche.tsx          engraved rosette — used in the seal and as fallback
   Seal.tsx               the monogram seal (large emblem, small logo)
-  TraceCard.tsx          the hero's interactive request trace
+  Dial.tsx               hairline instrument dial behind the contact close
   Pipeline.tsx           architecture diagram, gold lozenges on a line
   Frame.tsx              screenshot in a browser window
   SectionHead.tsx        numeral, rule and serif title for each section
+  WordReveal.tsx         paragraph that brightens word by word on scroll
+  Magnetic.tsx           buttons that lean toward the pointer
   CountUp.tsx            stats that count up when they scroll into view
   SmoothScroll.tsx       Lenis, off for reduced-motion users
   Reveal.tsx             scroll-reveal wrapper (fade, or masked slide-up)
   HashScroll.tsx         makes deep links to a section land correctly
 lib/
-  content.ts             all copy, project data and the hero trace
+  content.ts             all copy, project data and the seven `layers`
+  armillary.ts           the three.js scene, loaded on demand
   og.tsx                 shared template for the link-preview images
   og-fonts/              Cormorant Garamond TTFs for those images (OFL)
 public/
@@ -115,11 +124,14 @@ Things that will bite you if you assume otherwise:
 - **Masked reveals trigger on the clipping box.** Content that starts clipped
   away can never report itself as in view, so `Reveal variant="mask"` puts the
   observer on the wrapper and drives the child through variants.
-- **The work plates only stack on tall screens** (`.stack-card`, min-height
-  820px), so a pinned plate is never cropped on a short laptop window.
-- **The hero trace is data.** Its spans live in `trace` in `content.ts`; each
-  `slug` links a span to its project. Timings are illustrative, and the figure
-  caption says so.
+- **The rings and `layers` share an order.** Ring *i* in `lib/armillary.ts` is
+  `layers[i]` in `content.ts`, and `Orrery.tsx` draws the same order flat.
+- **Never leave a transform on an ancestor of a fixed element.** The route
+  fade in `app/template.tsx` animates opacity only, with no fill afterwards; a
+  lingering transform made the work preview position itself off-screen.
+- **The sphere degrades.** three.js loads after first paint, pauses when
+  off-screen or the tab is hidden, holds still under reduced motion, and falls
+  back to the engraved rosette if WebGL is unavailable.
 - **Navigation uses root-relative hashes** (`/#work`). A bare `#work` resolves
   against the current URL, so from `/work/[slug]` it silently does nothing.
 - **The hero is a server component** using CSS keyframes rather than Framer

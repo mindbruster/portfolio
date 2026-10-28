@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HashScroll from "@/components/HashScroll";
 import SmoothScroll from "@/components/SmoothScroll";
+import Intro from "@/components/Intro";
 import { profile } from "@/lib/content";
 
 const geist = Geist({
@@ -21,7 +22,7 @@ const geistMono = Geist_Mono({
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
   variable: "--font-cormorant",
   display: "swap",
@@ -66,14 +67,22 @@ export const viewport: Viewport = {
   themeColor: "#08090c",
 };
 
+/* Before first paint: play the intro curtain only on the first page of a
+   session. Sets .no-intro, which hides it and zeroes the hero's delays. */
+const introScript = `try{if(sessionStorage.getItem("intro"))document.documentElement.classList.add("no-intro");else sessionStorage.setItem("intro","1")}catch(e){document.documentElement.classList.add("no-intro")}`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${cormorant.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${cormorant.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
+      </head>
       <body>
+        <Intro />
         {/* Skip link — first tab stop for keyboard and screen-reader users */}
         <a
           href="#main"

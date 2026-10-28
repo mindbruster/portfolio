@@ -1,10 +1,10 @@
-import { ArrowDownToLine, ArrowUpRight, Mail } from "lucide-react";
+import { ArrowDownToLine, ArrowUpRight } from "lucide-react";
 import { profile } from "@/lib/content";
 import CopyEmail from "./CopyEmail";
-import Guilloche from "./Guilloche";
 import LocalTime from "./LocalTime";
+import Magnetic from "./Magnetic";
+import Dial from "./Dial";
 import Reveal from "./Reveal";
-import SectionHead from "./SectionHead";
 
 const channels = [
   { label: "LinkedIn", value: "in/abdul-aziz", href: profile.linkedin },
@@ -14,64 +14,72 @@ const channels = [
 
 export default function Contact() {
   return (
-    <section id="contact" className="relative scroll-mt-20 overflow-hidden border-t border-line py-28 lg:py-40">
-      {/* The rosette again, centred and faint, behind the close */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <div className="fade-edge w-[150vw] max-w-[1100px] opacity-60 sm:w-[95vw]">
-          <div className="spin-slow">
-            <Guilloche engrave={false} />
-          </div>
+    <section id="contact" className="relative scroll-mt-20 overflow-hidden border-t border-line py-28 lg:py-44">
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_60%_at_50%_45%,rgb(216_181_108/0.09),transparent_70%)]" />
+      <div aria-hidden className="pointer-events-none absolute top-[44%] left-1/2 w-[min(980px,150vw)] -translate-x-1/2 -translate-y-1/2 opacity-60">
+        <div className="spin-slow">
+          <Dial />
         </div>
       </div>
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_45%_at_50%_50%,rgb(8_9_12/0.55),transparent)]" />
 
-      <div className="page relative">
-        <SectionHead
-          n="V"
-          eyebrow="Contact"
-          center
-          title={
-            <span className="block text-[clamp(3.4rem,9vw,8.5rem)] leading-[0.92]">
-              Send me <em className="gold-text">the hard part.</em>
-            </span>
-          }
-        />
+      <div className="page relative text-center">
+        <Reveal>
+          <p className="smallcaps inline-flex items-center gap-4">
+            <span className="font-display text-[19px] tracking-[0.06em] normal-case">N° VII</span>
+            <span aria-hidden className="h-px w-10 bg-gold/50" />
+            Contact
+          </p>
+        </Reveal>
+        <Reveal variant="mask" delay={0.05} className="mt-8">
+          <h2 className="display mx-auto text-[clamp(3.6rem,10.5vw,10rem)] leading-[0.88] font-light tracking-[-0.03em]">
+            Send me <br className="hidden sm:block" />
+            <em className="gold-text font-normal">the hard part.</em>
+          </h2>
+        </Reveal>
 
-        <Reveal delay={0.1} className="mx-auto mt-8 max-w-2xl text-center">
+        <Reveal delay={0.12} className="mx-auto mt-10 max-w-xl">
           <p className="text-lg leading-relaxed text-muted sm:text-xl">{profile.about.at(-1)}</p>
+        </Reveal>
 
-          <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <a href={`mailto:${profile.email}`} className="btn-gold max-w-full !px-6 !py-3.5 !text-[15.5px]">
-              <Mail className="size-4 shrink-0" aria-hidden />
-              <span className="truncate">{profile.email}</span>
-            </a>
+        <Reveal delay={0.18} className="mt-14">
+          <a
+            href={`mailto:${profile.email}`}
+            className="roll-host font-display inline-block max-w-full text-[clamp(1.6rem,4vw,3.4rem)] leading-tight font-light break-all text-ivory"
+          >
+            <span className="roll">
+              <span>{profile.email}</span>
+              <span aria-hidden>{profile.email}</span>
+            </span>
+            <span aria-hidden className="mx-auto mt-2 block h-px w-full bg-gradient-to-r from-transparent via-gold to-transparent" />
+          </a>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <Magnetic>
+              <a href={`mailto:${profile.email}`} className="btn-gold">
+                Write to me
+                <ArrowUpRight className="size-4" aria-hidden />
+              </a>
+            </Magnetic>
             <CopyEmail email={profile.email} />
           </div>
         </Reveal>
 
-        <Reveal delay={0.15} className="mx-auto mt-14 max-w-3xl">
-          <ul className="glass grid overflow-hidden rounded-2xl sm:grid-cols-3">
+        <Reveal delay={0.24} className="mx-auto mt-20 max-w-4xl">
+          <ul className="grid border-y border-line sm:grid-cols-3">
             {channels.map((c, i) => (
               <li key={c.label} className={i > 0 ? "border-t border-line sm:border-t-0 sm:border-l" : ""}>
                 <a
                   href={c.href}
                   target={c.href.startsWith("http") ? "_blank" : undefined}
                   rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="group flex items-center justify-between gap-3 px-6 py-5 transition-colors hover:bg-white/[0.03]"
+                  className="group flex flex-col items-center gap-1.5 px-6 py-7 transition-colors hover:bg-white/[0.02]"
                 >
-                  <span>
-                    <span className="smallcaps block !text-[10px]">{c.label}</span>
-                    <span className="mt-1 block text-[15.5px] transition-colors group-hover:text-gold-bright">{c.value}</span>
-                  </span>
-                  <ArrowUpRight
-                    className="size-4 text-subtle transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold"
-                    aria-hidden
-                  />
+                  <span className="smallcaps !text-[10px]">{c.label}</span>
+                  <span className="text-[16px] transition-colors group-hover:text-gold-bright">{c.value}</span>
                 </a>
               </li>
             ))}
           </ul>
-          <p className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center text-[14px] text-muted">
+          <p className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[14px] text-muted">
             <span>
               {profile.location} · <LocalTime /> PKT
             </span>

@@ -5,23 +5,27 @@ import Seal from "./Seal";
 
 export default function Footer() {
   return (
-    <footer className="relative border-t border-line">
-      <div aria-hidden className="rule-gold absolute inset-x-0 -top-px opacity-50" />
-      <div className="page flex flex-col gap-6 py-10 text-[13.5px] text-muted sm:flex-row sm:items-center sm:justify-between">
-        <p className="flex items-center gap-3">
-          <Seal size="sm" className="size-8" />
-          <span>
-            <span className="font-display text-[17px] text-ivory">{profile.name}</span>
-            <span className="block text-[12.5px] text-subtle">
-              © {new Date().getFullYear()} · {profile.role}, {profile.location}
+    <footer className="relative overflow-hidden border-t border-line">
+      {/* The name, engraved across the foot of the page */}
+      <p
+        aria-hidden
+        className="font-display pointer-events-none -mb-[0.2em] text-center text-[19vw] leading-[0.85] font-light tracking-[-0.04em] whitespace-nowrap text-transparent select-none [-webkit-text-stroke:1px_rgb(216_181_108/0.22)]"
+      >
+        {profile.name}
+      </p>
+      <div className="relative border-t border-line bg-ink">
+        <div className="page flex flex-col gap-5 py-8 text-[13.5px] text-muted sm:flex-row sm:items-center sm:justify-between">
+          <p className="flex items-center gap-3">
+            <Seal size="sm" className="size-8" />
+            <span>
+              © {new Date().getFullYear()} {profile.name} · {profile.role}, {profile.location}
             </span>
-          </span>
-        </p>
-        <p className="text-subtle">Set in Cormorant Garamond &amp; Geist. Built with Next.js.</p>
-        <Link href="/#top" className="inline-flex items-center gap-1.5 transition-colors hover:text-gold-bright">
-          Back to top
-          <ArrowUp className="size-3.5" aria-hidden />
-        </Link>
+          </p>
+          <Link href="/#top" className="inline-flex items-center gap-1.5 transition-colors hover:text-gold-bright">
+            Back to top
+            <ArrowUp className="size-3.5" aria-hidden />
+          </Link>
+        </div>
       </div>
     </footer>
   );

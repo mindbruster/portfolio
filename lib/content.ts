@@ -700,8 +700,9 @@ export const education = {
 /** Section numbering, set in roman like a bound document. */
 export const numerals = ["I", "II", "III", "IV", "V", "VI"] as const;
 
-/** Home-page sections in reading order. */
+/** Home-page sections in reading order. The header shows all but the last; Contact is its button. */
 export const nav = [
+  { href: "/#layers", id: "layers", label: "Layers" },
   { href: "/#work", id: "work", label: "Work" },
   { href: "/#about", id: "about", label: "About" },
   { href: "/#experience", id: "experience", label: "Experience" },
@@ -709,36 +710,29 @@ export const nav = [
   { href: "/#contact", id: "contact", label: "Contact" },
 ] as const;
 
-export type Span = {
-  /** Reads like an OpenTelemetry span name. */
+export type Layer = {
+  /** Ring name on the armillary, and the heading in the layers section. */
   name: string;
-  /** The project this layer was built in. Absent for the model itself. */
-  slug?: string;
-  note: string;
-  /** Milliseconds from the start of the request. Illustrative, not measured. */
-  start: number;
-  end: number;
+  /** The project it was built in. */
+  slug: string;
+  /** One sentence on what the layer does. */
+  line: string;
 };
 
 /**
- * The hero figure: one composite request, traced end to end. Each span is a
- * layer shipped in one of the projects above — except the model, which is
- * the point.
+ * The seven rings of the armillary — everything built around the model.
+ * Order matches the rings in lib/armillary.ts, outermost first.
  */
-export const trace: { total: number; spans: Span[] } = {
-  total: 1700,
-  spans: [
-    { name: "input.screen", slug: "yoluno", note: "Keyword scan, then a multilingual classifier that survives paraphrase.", start: 0, end: 46 },
-    { name: "memory.recall", slug: "myneutron", note: "Context from earlier sessions, found by meaning rather than by keyword.", start: 46, end: 132 },
-    { name: "retrieve.cite", slug: "graysen", note: "Clauses retrieved from UAE federal law, with a citation attached to every answer.", start: 132, end: 290 },
-    { name: "route.provider", slug: "motionforge", note: "One gateway picks Kling, Hailuo or Runway for each shot.", start: 290, end: 314 },
-    { name: "model.generate", note: "Someone else's model. The easy part.", start: 314, end: 1410 },
-    { name: "output.screen", slug: "yoluno", note: "Every reply checked before a child ever sees it.", start: 1410, end: 1468 },
-    { name: "render.fulfil", slug: "soundbyte", note: "Generated art prepared to physical spec and shipped as a print.", start: 1468, end: 1630 },
-    { name: "cost.attribute", slug: "llm-meter", note: "Spend allocated to the team and project that caused it.", start: 1630, end: 1662 },
-    { name: "ledger.post", slug: "jewelry-erp", note: "A balanced double entry, checked by the database at commit.", start: 1662, end: 1688 },
-  ],
-};
+export const layers: Layer[] = [
+  { name: "Safety screening", slug: "yoluno", line: "Every message screened on the way in and every reply on the way out — before a child ever sees it." },
+  { name: "Semantic memory", slug: "myneutron", line: "Context from earlier sessions, found by meaning rather than keyword, and shared across ChatGPT and Gemini." },
+  { name: "Retrieval & grounding", slug: "graysen", line: "Clauses retrieved from UAE federal law, with a citation attached to every answer." },
+  { name: "Model routing", slug: "motionforge", line: "One gateway picks Kling, Hailuo or Runway for each shot, so a model is a config choice, not a rewrite." },
+  { name: "Generation to fulfilment", slug: "soundbyte", line: "A recorded voice becomes generated art, and then a framed print at someone's door." },
+  { name: "Cost attribution", slug: "llm-meter", line: "Spend across six AI providers, allocated to the team and the project that caused it." },
+  { name: "Ledger & books", slug: "jewelry-erp", line: "Every bill posts a balanced double entry, and the database refuses one that isn't." },
+];
+
 
 export type Note = { title: string; blurb: string; tag: string };
 
