@@ -5,13 +5,14 @@ evidence: live products, case studies with architecture, and the reasoning behin
 the decisions.
 
 The design argues one idea — *the model is the easy part* — and is set like an
-engineering document: warm paper, ink, hairline rules, one vermilion signal colour,
-numbered sections (§) and figures. The hero figure is a request trace, drawn like
-an observability waterfall, where every span is a layer built in one of the
-projects and the single grey span is the model. A dark ("ink") theme follows the
-system setting, with a toggle that remembers the choice.
+engraved certificate: deep ink, ivory type, champagne gold, small capitals and
+roman-numeral sections. Its signature is a guilloche rosette (the engraving on
+banknotes and watch dials), drawn procedurally on a canvas and revealed with an
+engraving sweep. The hero card is a request trace where every gold span is a
+layer built in one of the projects and the one grey span is the model. Work is a
+deck of plates that stack as you scroll; scrolling is smoothed with Lenis.
 
-Type: Instrument Serif (display), Geist (text), Geist Mono (labels).
+Type: Cormorant Garamond (display), Geist (text), Geist Mono (technical labels).
 
 **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · Framer Motion
 
@@ -40,19 +41,21 @@ app/
   globals.css            design tokens for both themes + component classes
   icon.svg               favicon, alongside favicon.ico and apple-icon.png
 components/
-  Header  Hero  Work  About  Experience  Notes  Contact  Footer
-  Trace.tsx              the hero's interactive request waterfall
-  Pipeline.tsx           architecture diagram, drawn as a signal path
+  Header  Hero  Marquee  Work  About  Experience  Notes  Contact  Footer
+  Guilloche.tsx          the engraved rosette, drawn once to a canvas
+  Seal.tsx               the monogram seal (large emblem, small logo)
+  TraceCard.tsx          the hero's interactive request trace
+  Pipeline.tsx           architecture diagram, gold lozenges on a line
   Frame.tsx              screenshot in a browser window
-  SectionHead.tsx        § number, rule and serif title for each section
-  ThemeToggle.tsx        light / dark switch
-  Mark.tsx               the logo — a three-span waterfall
-  Reveal.tsx             scroll-reveal wrapper
+  SectionHead.tsx        numeral, rule and serif title for each section
+  CountUp.tsx            stats that count up when they scroll into view
+  SmoothScroll.tsx       Lenis, off for reduced-motion users
+  Reveal.tsx             scroll-reveal wrapper (fade, or masked slide-up)
   HashScroll.tsx         makes deep links to a section land correctly
 lib/
   content.ts             all copy, project data and the hero trace
   og.tsx                 shared template for the link-preview images
-  og-fonts/              Instrument Serif TTFs for those images (OFL)
+  og-fonts/              Cormorant Garamond TTFs for those images (OFL)
 public/
   shots/                 product screenshots
   resume.pdf             downloadable CV
@@ -107,9 +110,13 @@ They live in `public/shots/`. Two rules:
 Things that will bite you if you assume otherwise:
 
 - **Tailwind v4 configures from CSS.** Colours are CSS variables on `:root`,
-  swapped for the dark theme, and exposed to Tailwind through `@theme inline` —
-  so `bg-paper` / `text-ink` follow the theme with no `dark:` variants anywhere.
+  exposed to Tailwind through `@theme inline` (`bg-ink`, `text-gold`, …).
   There is no `tailwind.config.ts`, and adding one back does nothing.
+- **Masked reveals trigger on the clipping box.** Content that starts clipped
+  away can never report itself as in view, so `Reveal variant="mask"` puts the
+  observer on the wrapper and drives the child through variants.
+- **The work plates only stack on tall screens** (`.stack-card`, min-height
+  820px), so a pinned plate is never cropped on a short laptop window.
 - **The hero trace is data.** Its spans live in `trace` in `content.ts`; each
   `slug` links a span to its project. Timings are illustrative, and the figure
   caption says so.

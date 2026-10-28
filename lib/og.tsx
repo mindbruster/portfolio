@@ -1,51 +1,61 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
-import { profile, trace } from "@/lib/content";
+import { profile } from "@/lib/content";
 
-/** Shared look for every link-preview image: the site's paper, ink and signal. */
+/** Shared look for every link-preview image: ink, ivory and gold. */
 export const ogSize = { width: 1200, height: 630 };
 
-const paper = "#f1efe8";
-const ink = "#17160f";
-const muted = "#4f4c44";
-const signal = "#e0522a";
-const model = "#b9b5aa";
-const rule = "rgba(23,22,15,0.16)";
+const ink = "#08090c";
+const ivory = "#ede7da";
+const muted = "#a9a395";
+const gold = "#d8b56c";
 
 async function fonts() {
   const dir = join(process.cwd(), "lib/og-fonts");
   const [regular, italic] = await Promise.all([
-    readFile(join(dir, "InstrumentSerif-Regular.ttf")),
-    readFile(join(dir, "InstrumentSerif-Italic.ttf")),
+    readFile(join(dir, "CormorantGaramond-Medium.ttf")),
+    readFile(join(dir, "CormorantGaramond-Italic.ttf")),
   ]);
   return [
-    { name: "Instrument Serif", data: regular, style: "normal" as const, weight: 400 as const },
-    { name: "Instrument Serif", data: italic, style: "italic" as const, weight: 400 as const },
+    { name: "Cormorant", data: regular, style: "normal" as const, weight: 500 as const },
+    { name: "Cormorant", data: italic, style: "italic" as const, weight: 500 as const },
   ];
 }
 
-/** The hero trace, shrunk to a strip: one row per span, the model in grey. */
-function TraceStrip() {
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 5, width: 520 }}>
-      {trace.spans.map((s) => (
-        <div key={s.name + s.start} style={{ display: "flex", height: 7, position: "relative" }}>
-          <div
-            style={{
-              position: "absolute",
-              left: `${(s.start / trace.total) * 100}%`,
-              width: `${Math.max(((s.end - s.start) / trace.total) * 100, 1.2)}%`,
-              height: 7,
-              borderRadius: 4,
-              background: s.slug ? signal : model,
-            }}
-          />
-        </div>
-      ))}
-    </div>
-  );
+/* The site's rosette as SVG paths (the live site draws it on a canvas). */
+function ring(c: number, u: number, R: number, A: number, n: number, K: number) {
+  const out: string[] = [];
+  for (let k = 0; k < K; k++) {
+    const ph = (k / K) * ((2 * Math.PI) / n);
+    let d = "";
+    for (let i = 0; i <= 480; i++) {
+      const t = (i / 480) * Math.PI * 2;
+      const r = (R + A * Math.sin(n * t)) * u;
+      d += `${i ? "L" : "M"}${(c + r * Math.cos(t + ph)).toFixed(1)} ${(c + r * Math.sin(t + ph)).toFixed(1)}`;
+    }
+    out.push(d);
+  }
+  return out;
 }
+function spiro(c: number, u: number) {
+  const R = 0.278 * u, r = 0.1 * u, d = 0.211 * u;
+  let p = "";
+  const steps = 2600;
+  for (let i = 0; i <= steps; i++) {
+    const t = (i / steps) * Math.PI * 2 * 9;
+    const x = c + (R - r) * Math.cos(t) + d * Math.cos(((R - r) / r) * t);
+    const y = c + (R - r) * Math.sin(t) - d * Math.sin(((R - r) / r) * t);
+    p += `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`;
+  }
+  return p;
+}
+const S = 760;
+const rosette = [
+  ...ring(S / 2, S / 2, 0.745, 0.2, 15, 12).map((d) => ({ d, o: 0.3 })),
+  ...ring(S / 2, S / 2, 0.455, 0.115, 11, 10).map((d) => ({ d, o: 0.36 })),
+  { d: spiro(S / 2, S / 2), o: 0.6 },
+];
 
 export async function ogCard({
   eyebrow,
@@ -65,53 +75,84 @@ export async function ogCard({
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          background: paper,
-          color: ink,
-          padding: "56px 64px",
-          fontFamily: "Instrument Serif",
+          position: "relative",
+          background: ink,
+          color: ivory,
+          fontFamily: "Cormorant",
+          overflow: "hidden",
         }}
       >
         <div
           style={{
+            position: "absolute",
+            right: -200,
+            top: -65,
+            width: S,
+            height: S,
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            borderBottom: `1px solid ${rule}`,
-            paddingBottom: 20,
-            fontSize: 24,
+            backgroundImage: "radial-gradient(circle, rgba(216,181,108,0.16), rgba(8,9,12,0) 65%)",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, width: 34 }}>
-              <div style={{ width: 12, height: 6, borderRadius: 3, background: signal }} />
-              <div style={{ marginLeft: 9, width: 19, height: 6, borderRadius: 3, background: model }} />
-              <div style={{ marginLeft: 24, width: 10, height: 6, borderRadius: 3, background: signal }} />
+          <svg width={S} height={S} viewBox={`0 0 ${S} ${S}`}>
+            {rosette.map((r, i) => (
+              <path key={i} d={r.d} fill="none" stroke={gold} strokeOpacity={r.o} strokeWidth={0.9} />
+            ))}
+            <circle cx={S / 2} cy={S / 2} r={S * 0.48} fill="none" stroke={gold} strokeOpacity={0.35} strokeWidth={1} />
+          </svg>
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            backgroundImage: "linear-gradient(90deg, rgba(8,9,12,1) 38%, rgba(8,9,12,0.2) 75%, rgba(8,9,12,0) 100%)",
+          }}
+        />
+
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            width: "100%",
+            padding: "60px 72px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 54,
+                height: 54,
+                borderRadius: 999,
+                border: `1.5px solid ${gold}`,
+                color: gold,
+                fontSize: 26,
+                letterSpacing: -2,
+              }}
+            >
+              AA
             </div>
-            <span>{profile.name}</span>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <span style={{ fontSize: 30 }}>{profile.name}</span>
+              <span style={{ fontSize: 17, letterSpacing: 5, color: gold }}>{eyebrow.toUpperCase()}</span>
+            </div>
           </div>
-          <span style={{ color: muted, fontSize: 22, letterSpacing: 1 }}>{eyebrow}</span>
-        </div>
 
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              fontSize: 132,
-              lineHeight: 0.98,
-              letterSpacing: -2,
-            }}
-          >
-            {children}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", fontSize: 128, lineHeight: 0.95, letterSpacing: -2 }}>
+              {children}
+            </div>
+            {subtitle && <div style={{ marginTop: 22, fontSize: 38, color: muted, fontStyle: "italic" }}>{subtitle}</div>}
           </div>
-          {subtitle && <div style={{ marginTop: 22, fontSize: 36, color: muted }}>{subtitle}</div>}
-        </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-          <TraceStrip />
-          <span style={{ fontSize: 22, color: muted }}>{host}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 24, color: muted }}>
+            <div style={{ width: 56, height: 1, background: gold, display: "flex" }} />
+            {host}
+          </div>
         </div>
       </div>
     ),
@@ -119,7 +160,7 @@ export async function ogCard({
   );
 }
 
-/** Italic signal-coloured run inside an OG headline */
+/** Gilt italic run inside an OG headline */
 export function Accent({ children }: { children: React.ReactNode }) {
-  return <span style={{ fontStyle: "italic", color: "#bf3b18" }}>{children}</span>;
+  return <span style={{ fontStyle: "italic", color: gold }}>{children}</span>;
 }

@@ -3,56 +3,39 @@ import type { CSSProperties } from "react";
 type Step = { label: string; note: string };
 
 /**
- * Architecture flow, drawn as a signal path: numbered nodes on one line.
- * Semantic HTML rather than an image, so it reads aloud, reflows, and never
- * ships a bitmap. Runs across on wide screens and down on narrow ones.
+ * Architecture flow: gold lozenges strung on one line, each step in its
+ * own glass cell. Semantic HTML rather than an image — it reads aloud,
+ * reflows, and never ships a bitmap. Across on wide screens, down on narrow.
  */
-export default function Pipeline({
-  title,
-  steps,
-  figure,
-}: {
-  title: string;
-  steps: Step[];
-  figure: string;
-}) {
+export default function Pipeline({ title, steps, figure }: { title: string; steps: Step[]; figure: string }) {
   return (
     <figure>
       <ol
-        className="relative grid lg:grid-cols-[repeat(var(--n),minmax(0,1fr))] lg:gap-x-4"
+        className="relative grid gap-3 lg:grid-cols-[repeat(var(--n),minmax(0,1fr))] lg:gap-4"
         style={{ "--n": steps.length } as CSSProperties}
       >
-        {steps.map((s, i) => {
-          const last = i === steps.length - 1;
-          return (
-            <li key={s.label} className="relative grid grid-cols-[2.25rem_1fr] gap-x-4 pb-8 last:pb-0 lg:block lg:pb-0">
-              {!last && (
-                <>
-                  {/* down to the next node (narrow) */}
-                  <span aria-hidden className="absolute top-9 bottom-0 left-[1.125rem] w-px bg-rule-strong lg:hidden" />
-                  {/* across to the next node (wide) */}
-                  <span
-                    aria-hidden
-                    className="absolute top-[1.125rem] left-9 hidden h-px w-[calc(100%-1.25rem)] bg-rule-strong lg:block"
-                  />
-                </>
-              )}
-              <span
-                className={`relative z-10 grid size-9 place-items-center rounded-full border bg-paper font-mono text-[12px] ${
-                  i === 0 || last ? "border-signal text-signal" : "border-rule-strong text-ink"
-                }`}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div className="pt-1.5 lg:pt-0 lg:pr-2">
-                <p className="font-medium leading-snug lg:mt-4">{s.label}</p>
-                <p className="mt-1.5 text-[15px] leading-relaxed text-muted">{s.note}</p>
-              </div>
-            </li>
-          );
-        })}
+        {/* The line the lozenges sit on (wide screens) */}
+        <span aria-hidden className="absolute top-[7px] right-[8%] left-[8%] hidden h-px bg-gradient-to-r from-gold/20 via-gold/60 to-gold/20 lg:block" />
+        {/* …and down the left edge (narrow screens) */}
+        <span aria-hidden className="absolute top-2 bottom-2 left-[7px] w-px bg-gradient-to-b from-gold/60 to-gold/10 lg:hidden" />
+
+        {steps.map((s, i) => (
+          <li key={s.label} className="relative pl-9 lg:pl-0 lg:pt-9">
+            <span
+              aria-hidden
+              className={`absolute top-1 left-[2px] size-[11px] rotate-45 border bg-ink lg:top-[2px] lg:left-1/2 lg:-translate-x-1/2 ${
+                i === 0 || i === steps.length - 1 ? "border-gold bg-gold" : "border-gold"
+              }`}
+            />
+            <div className="glass h-full rounded-xl p-4">
+              <p className="font-mono text-[11px] text-gold">{String(i + 1).padStart(2, "0")}</p>
+              <p className="mt-1.5 font-medium leading-snug">{s.label}</p>
+              <p className="mt-1.5 text-[14.5px] leading-relaxed text-muted">{s.note}</p>
+            </div>
+          </li>
+        ))}
       </ol>
-      <figcaption className="mt-8 border-t border-rule pt-3 font-mono text-[11.5px] text-subtle">
+      <figcaption className="smallcaps mt-6 !text-[10px] !text-subtle">
         {figure} — {title}
       </figcaption>
     </figure>

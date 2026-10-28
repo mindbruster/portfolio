@@ -2,29 +2,43 @@ import type { ReactNode } from "react";
 import Reveal from "./Reveal";
 
 /**
- * Every home section opens the same way: a heavy rule, the § number in the
- * margin column, and a serif title across the content columns.
+ * Every section opens the same way: a roman numeral and small-caps label
+ * on a short gold rule, then a serif title that slides up out of a mask.
  */
 export default function SectionHead({
   n,
-  label,
+  eyebrow,
   title,
-  children,
+  aside,
+  center = false,
 }: {
   n: string;
-  label: string;
+  eyebrow: string;
   title: ReactNode;
-  children?: ReactNode;
+  aside?: ReactNode;
+  center?: boolean;
 }) {
   return (
-    <Reveal className="doc border-t border-rule-strong pt-5">
-      <p className="label lg:col-span-3 lg:pt-3">
-        <span className="text-signal">§ {n}</span> — {label}
-      </p>
-      <div className="lg:col-span-9">
-        <h2 className="display text-[clamp(2.6rem,6.2vw,5.25rem)]">{title}</h2>
-        {children && <div className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">{children}</div>}
+    <div
+      className={`flex flex-col gap-8 ${
+        center ? "items-center text-center" : "lg:flex-row lg:items-end lg:justify-between"
+      }`}
+    >
+      <div className={center ? "flex flex-col items-center" : ""}>
+        <Reveal>
+          <p className="smallcaps flex items-center gap-4">
+            <span className="font-display text-[19px] tracking-[0.08em] normal-case">N° {n}</span>
+            <span aria-hidden className="h-px w-10 bg-gold/50" />
+            {eyebrow}
+          </p>
+        </Reveal>
+        <Reveal variant="mask" delay={0.05} className="mt-6">
+          <h2 className={`display text-[clamp(2.7rem,6vw,5.6rem)] ${center ? "mx-auto max-w-4xl" : "max-w-4xl"}`}>
+            {title}
+          </h2>
+        </Reveal>
       </div>
-    </Reveal>
+      {aside && <Reveal delay={0.15}>{aside}</Reveal>}
+    </div>
   );
 }

@@ -1,53 +1,35 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { addressOf, projects } from "@/lib/content";
+import { addressOf, projects, type Project } from "@/lib/content";
 import Frame from "./Frame";
-import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
 export default function Work() {
   return (
-    <section id="work" className="scroll-mt-16 py-16 lg:py-24">
+    <section id="work" className="relative scroll-mt-20 py-24 lg:py-32">
       <div className="page">
         <SectionHead
-          n="01"
-          label="Work"
+          n="I"
+          eyebrow="Selected work"
           title={
             <>
-              Seven platforms in production, <em className="text-muted">and the problems that made them hard.</em>
+              Seven platforms in production, <em className="gold-text">and the problems that made them hard.</em>
             </>
+          }
+          aside={
+            <p className="max-w-[19rem] text-[15px] leading-relaxed text-muted">
+              Each one is evidence for a layer around the model. Open any of them for the architecture and the decisions
+              behind it.
+            </p>
           }
         />
 
-        {/* Contents — the whole section at a glance, each line a jump link */}
-        <Reveal className="doc mt-12">
-          <nav aria-label="Projects" className="lg:col-span-9 lg:col-start-4">
-            <ol className="grid border-t border-rule sm:grid-cols-2 sm:gap-x-8">
-              {projects.map((p, i) => (
-                <li key={p.slug} className="border-b border-rule">
-                  <a
-                    href={`#work-${p.slug}`}
-                    className="group flex items-baseline gap-4 py-3 transition-colors hover:text-signal"
-                  >
-                    <span className="font-mono text-[12px] text-subtle">{pad(i + 1)}</span>
-                    <span className="font-medium">{p.name}</span>
-                    <span
-                      aria-hidden
-                      className="mx-1 flex-1 translate-y-[-0.25em] border-b border-dotted border-rule-strong"
-                    />
-                    <span className="font-mono text-[12px] text-subtle group-hover:text-signal">{p.layer}</span>
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </nav>
-        </Reveal>
-
-        <div className="mt-14 lg:mt-20">
+        <div className="mt-16 lg:mt-24">
           {projects.map((p, i) => (
-            <Plate key={p.slug} p={p} n={i + 1} total={projects.length} />
+            <Plate key={p.slug} p={p} i={i} />
           ))}
         </div>
       </div>
@@ -55,90 +37,99 @@ export default function Work() {
   );
 }
 
-function Plate({ p, n, total }: { p: (typeof projects)[number]; n: number; total: number }) {
-  const caseStudy = p.study ? `/work/${p.slug}` : undefined;
+function Plate({ p, i }: { p: Project; i: number }) {
+  const n = pad(i + 1);
+  const study = p.study ? `/work/${p.slug}` : undefined;
+  const address = addressOf(p);
 
   return (
-    <article id={`work-${p.slug}`} className="doc scroll-mt-20 border-t border-rule py-12 lg:py-16">
-      {/* Margin: the plate's particulars */}
-      <Reveal className="lg:col-span-3">
-        <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2 lg:flex-col lg:gap-0">
-          <p className="font-mono text-sm">
-            <span className="text-signal">{pad(n)}</span>
-            <span className="text-subtle"> / {pad(total)}</span>
-          </p>
-          <p className="label lg:mt-4">{p.layer}</p>
-          <p className="font-mono text-[12px] text-subtle lg:mt-1.5">{p.year}</p>
-          <p className="font-mono text-[12px] lg:mt-4">
-            {p.href ? (
-              <a
-                href={p.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link inline-flex items-center gap-1.5"
-              >
-                <span className="size-1.5 rounded-full bg-signal-fill" aria-hidden />
-                {p.hrefLabel}
-                <ArrowUpRight className="size-3" aria-hidden />
-              </a>
-            ) : (
-              <span className="inline-flex items-center gap-1.5 text-subtle">
-                <span className="size-1.5 rounded-full border border-rule-strong" aria-hidden />
-                {p.internal ? "internal — no public link" : "no public link"}
-              </span>
-            )}
-          </p>
-        </div>
-      </Reveal>
+    <article
+      id={`work-${p.slug}`}
+      className="stack-card mb-6 scroll-mt-24 lg:mb-[12vh] lg:last:mb-0"
+      style={{ "--i": i } as CSSProperties}
+    >
+      <div className="plate group overflow-hidden rounded-[26px] sm:rounded-[30px]">
+        {/* Engraved watermark numeral */}
+        <span
+          aria-hidden
+          className="font-display pointer-events-none absolute right-5 -bottom-10 leading-none font-semibold text-transparent select-none [font-variant-numeric:lining-nums] [-webkit-text-stroke:1px_rgb(216_181_108/0.22)] text-[9rem] sm:-bottom-14 sm:text-[13rem] lg:-bottom-20 lg:text-[16rem]"
+        >
+          {n}
+        </span>
 
-      {/* Text */}
-      <Reveal delay={0.05} className="lg:col-span-4">
-        <h3 className="display text-[clamp(2.75rem,5vw,4.25rem)]">
-          {caseStudy ? (
-            <Link href={caseStudy} className="transition-colors hover:text-signal">
-              {p.name}
-            </Link>
-          ) : (
-            p.name
+        <div className="relative grid gap-10 p-6 sm:p-10 lg:grid-cols-12 lg:gap-14 lg:p-14">
+          <div className="flex flex-col lg:col-span-5">
+            <p className="smallcaps flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span>N° {n}</span>
+              <span aria-hidden className="h-px w-6 bg-gold/50" />
+              <span>{p.layer}</span>
+            </p>
+
+            <h3 className="display mt-6 text-[clamp(2.9rem,5.2vw,4.6rem)]">
+              {study ? (
+                <Link href={study} className="transition-colors duration-300 hover:text-gold-bright">
+                  {p.name}
+                </Link>
+              ) : (
+                p.name
+              )}
+            </h3>
+            <p className="mt-3 text-[16.5px] text-muted">
+              {p.tagline} <span className="text-subtle">· {p.year}</span>
+            </p>
+
+            <blockquote className="font-display mt-7 border-l border-gold/40 pl-5 text-[21px] leading-[1.35] text-ivory/90 italic sm:text-[23px]">
+              {p.problem}
+            </blockquote>
+
+            <ul className="mt-7 flex flex-wrap gap-1.5" aria-label="Stack">
+              {p.stack.map((t) => (
+                <li key={t} className="chip">
+                  {t}
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-4 pt-9">
+              {study && (
+                <Link href={study} className="btn-gold !py-2.5 !text-[14px]">
+                  Read the case study
+                  <ArrowRight className="size-4" aria-hidden />
+                </Link>
+              )}
+              {p.href ? (
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link inline-flex items-center gap-1.5 text-[14px]"
+                >
+                  {p.hrefLabel}
+                  <ArrowUpRight className="size-3.5" aria-hidden />
+                </a>
+              ) : (
+                <span className="text-[13.5px] text-subtle">{p.internal ? "Internal — no public link" : "No public link"}</span>
+              )}
+            </div>
+          </div>
+
+          {p.shot && (
+            <div className="lg:col-span-7 lg:self-center">
+              {study ? (
+                <Link href={study} aria-label={`${p.name} case study`} className="block [perspective:1800px]">
+                  <Frame
+                    shot={p.shot}
+                    address={address}
+                    className="transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] lg:[transform:rotateY(-6deg)_rotateX(2deg)] lg:group-hover:[transform:none]"
+                  />
+                </Link>
+              ) : (
+                <Frame shot={p.shot} address={address} />
+              )}
+            </div>
           )}
-        </h3>
-        <p className="mt-3 text-[17px] text-muted">{p.tagline}</p>
-        <p className="mt-6 font-serif text-[22px] leading-[1.35] sm:text-2xl">{p.problem}</p>
-        <ul className="mt-6 flex flex-wrap gap-1.5" aria-label="Stack">
-          {p.stack.map((t) => (
-            <li key={t} className="chip">
-              {t}
-            </li>
-          ))}
-        </ul>
-        {caseStudy && (
-          <Link
-            href={caseStudy}
-            className="group/cta mt-8 inline-flex items-center gap-2 font-mono text-[13px] text-signal"
-          >
-            Read the case study
-            <ArrowRight className="size-3.5 transition-transform group-hover/cta:translate-x-1" aria-hidden />
-          </Link>
-        )}
-      </Reveal>
-
-      {/* Figure */}
-      {p.shot && (
-        <Reveal delay={0.1} className="lg:col-span-5">
-          <figure>
-            {caseStudy ? (
-              <Link href={caseStudy} className="group block" aria-label={`${p.name} case study`}>
-                <Frame shot={p.shot} address={addressOf(p)} />
-              </Link>
-            ) : (
-              <Frame shot={p.shot} address={addressOf(p)} />
-            )}
-            <figcaption className="mt-3 font-mono text-[11.5px] text-subtle">
-              Fig. {n} — {p.name}, {addressOf(p)}
-            </figcaption>
-          </figure>
-        </Reveal>
-      )}
+        </div>
+      </div>
     </article>
   );
 }

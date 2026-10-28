@@ -7,7 +7,7 @@ export const contentType = "image/png";
 
 export default async function Image() {
   return ogCard({
-    eyebrow: `${profile.role} · ${profile.location}`,
+    eyebrow: `${profile.role} · Lahore`,
     children: (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <span>The model is</span>

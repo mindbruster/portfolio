@@ -3,10 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowDownToLine, Menu, X } from "lucide-react";
-import { nav, profile } from "@/lib/content";
-import Mark from "./Mark";
-import ThemeToggle from "./ThemeToggle";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+import { nav, numerals, profile } from "@/lib/content";
+import Seal from "./Seal";
 
 export default function Header() {
   const pathname = usePathname();
@@ -16,14 +15,14 @@ export default function Header() {
   const [active, setActive] = useState<string | null>(null);
   const progress = useRef<HTMLDivElement>(null);
 
-  // Background on scroll, plus a 1px reading-progress rule along the bottom.
+  // Glass once the page moves, plus a gold reading-progress hairline.
   useEffect(() => {
     let frame = 0;
     const onScroll = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const y = window.scrollY;
-        setScrolled(y > 8);
+        setScrolled(y > 12);
         const max = document.documentElement.scrollHeight - window.innerHeight;
         if (progress.current) {
           progress.current.style.transform = `scaleX(${max > 0 ? Math.min(y / max, 1) : 0})`;
@@ -40,7 +39,7 @@ export default function Header() {
     };
   }, [pathname]);
 
-  // Which home section is under the middle of the viewport.
+  // Which home section sits under the middle of the viewport.
   useEffect(() => {
     if (!onHome) return;
     const sections = nav
@@ -56,76 +55,74 @@ export default function Header() {
     return () => observer.disconnect();
   }, [onHome]);
 
-  // The mobile sheet locks scrolling behind it and closes on Escape.
+  // The mobile sheet locks the page behind it and closes on Escape.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
       window.removeEventListener("keydown", onKey);
     };
   }, [open]);
 
-  // A section left over from the home page means nothing on a case study.
+  // A section remembered from the home page means nothing on a case study.
   const current = onHome ? active : null;
-  const activeIndex = nav.findIndex((n) => n.id === current);
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-300 ${
-        scrolled || open
-          ? "border-b border-rule bg-paper/85 backdrop-blur-md"
-          : "border-b border-transparent"
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-500 ${
+        scrolled || open ? "border-b border-line bg-ink/75 backdrop-blur-xl" : "border-b border-transparent"
       }`}
     >
-      <nav aria-label="Primary" className="page flex h-16 items-center justify-between gap-6">
-        <div className="flex min-w-0 items-center gap-3">
-          {/* "/" rather than "#top" so it also works from a case-study page */}
-          <Link href="/" className="group flex items-center gap-2.5" onClick={() => setOpen(false)}>
-            <Mark className="size-6 transition-transform duration-300 group-hover:-rotate-6" />
-            <span className="text-[15px] font-medium tracking-tight">{profile.name}</span>
-          </Link>
-          {activeIndex >= 0 && (
-            <span className="hidden truncate font-mono text-xs text-subtle md:inline">
-              <span aria-hidden>/ </span>§ {String(activeIndex + 1).padStart(2, "0")}{" "}
-              {nav[activeIndex].label}
-            </span>
-          )}
-        </div>
+      <nav aria-label="Primary" className="page flex h-[72px] items-center justify-between gap-6">
+        <Link href="/" onClick={() => setOpen(false)} className="group flex items-center gap-3">
+          <Seal size="sm" className="size-9 transition-transform duration-700 group-hover:rotate-[20deg]" />
+          <span className="leading-none">
+            <span className="font-display block text-[21px] font-semibold tracking-tight">{profile.name}</span>
+            <span className="smallcaps mt-1 block !text-[9.5px] !text-muted">{profile.role}</span>
+          </span>
+        </Link>
 
-        <div className="flex items-center gap-2">
-          <ul className="mr-3 hidden items-center gap-6 lg:flex">
-            {nav.map((item, i) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={item.id === current ? "true" : undefined}
-                  className={`group text-sm transition-colors hover:text-ink ${
-                    item.id === current ? "text-ink" : "text-muted"
+        <ul className="hidden items-center gap-8 lg:flex">
+          {nav.map((item, i) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                aria-current={item.id === current ? "true" : undefined}
+                className={`group relative flex items-baseline gap-2 text-[14.5px] transition-colors hover:text-gold-bright ${
+                  item.id === current ? "text-gold-bright" : "text-muted"
+                }`}
+              >
+                <span className="font-display text-[13px] text-gold/80">{numerals[i]}.</span>
+                {item.label}
+                <span
+                  aria-hidden
+                  className={`absolute -bottom-1.5 left-0 h-px bg-gold transition-all duration-500 ${
+                    item.id === current ? "w-full" : "w-0 group-hover:w-full"
                   }`}
-                >
-                  <span className="mr-1 font-mono text-[11px] text-subtle transition-colors group-hover:text-signal">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <ThemeToggle />
-          <a href={profile.resume} download className="btn hidden sm:inline-flex">
+                />
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <div className="flex items-center gap-3">
+          <a href={profile.resume} download className="btn-ghost hidden !px-4 !py-2 !text-[13.5px] sm:inline-flex">
             CV
-            <ArrowDownToLine className="size-3.5" aria-hidden />
           </a>
+          <Link href="/#contact" className="btn-gold hidden !px-5 !py-2.5 !text-[14px] sm:inline-flex">
+            Let&apos;s talk
+            <ArrowUpRight className="size-4" aria-hidden />
+          </Link>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="grid size-9 place-items-center rounded-full border border-rule text-ink lg:hidden"
+            className="grid size-10 place-items-center rounded-full border border-line-strong text-ivory lg:hidden"
           >
             {open ? <X className="size-4" aria-hidden /> : <Menu className="size-4" aria-hidden />}
           </button>
@@ -135,34 +132,28 @@ export default function Header() {
       <div
         ref={progress}
         aria-hidden
-        className="absolute inset-x-0 bottom-[-1px] h-px origin-left scale-x-0 bg-signal-fill"
+        className="absolute inset-x-0 bottom-[-1px] h-px origin-left scale-x-0 bg-gradient-to-r from-gold-deep via-gold to-gold-bright"
       />
 
       {open && (
-        <div id="mobile-nav" className="h-[calc(100dvh-4rem)] overflow-y-auto bg-paper lg:hidden">
-          <ul className="page flex flex-col pt-6">
+        <div id="mobile-nav" data-lenis-prevent className="h-[calc(100dvh-72px)] overflow-y-auto bg-ink lg:hidden">
+          <ul className="page flex flex-col pt-8">
             {nav.map((item, i) => (
-              <li key={item.href} className="border-b border-rule">
-                <Link
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="flex items-baseline gap-4 py-5"
-                >
-                  <span className="font-mono text-xs text-subtle">
-                    § {String(i + 1).padStart(2, "0")}
-                  </span>
+              <li key={item.href} className="border-b border-line">
+                <Link href={item.href} onClick={() => setOpen(false)} className="flex items-baseline gap-5 py-5">
+                  <span className="font-display w-8 text-lg text-gold">{numerals[i]}.</span>
                   <span className="display text-5xl">{item.label}</span>
                 </Link>
               </li>
             ))}
           </ul>
-          <div className="page mt-8 flex flex-wrap gap-3 pb-10">
-            <a href={profile.resume} download className="btn btn-solid">
+          <div className="page mt-10 flex flex-wrap gap-3 pb-12">
+            <Link href="/#contact" onClick={() => setOpen(false)} className="btn-gold">
+              Let&apos;s talk
+              <ArrowUpRight className="size-4" aria-hidden />
+            </Link>
+            <a href={profile.resume} download className="btn-ghost">
               Download CV
-              <ArrowDownToLine className="size-3.5" aria-hidden />
-            </a>
-            <a href={`mailto:${profile.email}`} className="btn">
-              {profile.email}
             </a>
           </div>
         </div>

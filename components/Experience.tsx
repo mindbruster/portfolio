@@ -3,99 +3,89 @@ import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
 
 export default function Experience() {
+  const entries = [
+    ...experience.map((r) => ({ period: r.period, title: r.title, org: r.company, place: r.location, points: r.points })),
+    { period: education.period, title: education.degree, org: education.school, place: "Education", points: [] as string[] },
+  ];
+
   return (
-    <section id="experience" className="scroll-mt-16 py-16 lg:py-24">
+    <section id="experience" className="relative scroll-mt-20 border-t border-line py-24 lg:py-32">
       <div className="page">
         <SectionHead
-          n="03"
-          label="Experience"
+          n="III"
+          eyebrow="Experience"
           title={
             <>
-              Where the work <em className="text-muted">happened.</em>
+              Where the work <em className="gold-text">happened.</em>
             </>
           }
         />
 
-        <ol className="mt-12 lg:mt-16">
-          {experience.map((r, i) => (
-            <Reveal as="li" key={r.title + r.period} delay={i * 0.04} className="doc border-t border-rule py-10">
-              <div className="lg:col-span-3">
-                <p className="font-mono text-[13px]">{r.period}</p>
-                {r.location && <p className="mt-1 font-mono text-[12px] text-subtle">{r.location}</p>}
+        {/* Timeline: a gold rule with a lozenge at every role */}
+        <ol className="relative mt-16 lg:mt-24">
+          <span
+            aria-hidden
+            className="absolute top-2 bottom-2 left-[5px] w-px bg-gradient-to-b from-gold/60 via-gold/25 to-transparent lg:left-[calc(25%+5px)]"
+          />
+          {entries.map((e, i) => (
+            <Reveal as="li" key={e.title + e.period} delay={i * 0.05} className="relative grid gap-4 pb-14 pl-9 last:pb-0 lg:grid-cols-4 lg:gap-12 lg:pl-0">
+              <span
+                aria-hidden
+                className="absolute top-[0.55rem] left-0 size-[11px] rotate-45 border border-gold bg-ink lg:left-[25%]"
+              />
+              <div className="lg:pr-10 lg:text-right">
+                <p className="smallcaps !tracking-[0.18em]">{e.period}</p>
+                {e.place && <p className="mt-1.5 text-[13.5px] text-subtle">{e.place}</p>}
               </div>
-              <div className="lg:col-span-9">
-                <h3 className="display text-[2.15rem] leading-[1.05] sm:text-[2.5rem]">{r.title}</h3>
-                <p className="mt-1.5 text-muted">{r.company}</p>
-                <ul className="mt-5 max-w-3xl space-y-2.5">
-                  {r.points.map((pt) => (
-                    <li
-                      key={pt}
-                      className="relative pl-6 text-[17px] leading-relaxed text-muted before:absolute before:left-0 before:top-[0.78em] before:h-0.5 before:w-2.5 before:bg-signal-fill"
-                    >
-                      {pt}
-                    </li>
-                  ))}
-                </ul>
+              <div className="lg:col-span-3 lg:pl-12">
+                <h3 className="display text-[2.1rem] leading-[1.05] sm:text-[2.6rem]">{e.title}</h3>
+                <p className="mt-1.5 text-[16px] text-gold-bright/90">{e.org}</p>
+                {e.points.length > 0 && (
+                  <ul className="mt-6 max-w-3xl space-y-3">
+                    {e.points.map((pt) => (
+                      <li key={pt} className="relative pl-6 text-[16.5px] leading-relaxed text-muted">
+                        <span aria-hidden className="absolute top-[0.72em] left-0 h-px w-3 bg-gold/70" />
+                        {pt}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </Reveal>
           ))}
-          <Reveal as="li" className="doc border-y border-rule py-10">
-            <div className="lg:col-span-3">
-              <p className="font-mono text-[13px]">{education.period}</p>
-              <p className="mt-1 font-mono text-[12px] text-subtle">Education</p>
-            </div>
-            <div className="lg:col-span-9">
-              <h3 className="display text-[2.15rem] leading-[1.05] sm:text-[2.5rem]">{education.degree}</h3>
-              <p className="mt-1.5 text-muted">{education.school}</p>
-            </div>
-          </Reveal>
         </ol>
 
-        {/* Skills, set as a bill of materials */}
-        <div className="doc mt-16 lg:mt-24">
-          <Reveal className="lg:col-span-3">
-            <p className="label">Bill of materials</p>
-            <p className="mt-3 max-w-[16rem] text-[15px] leading-snug text-muted">
-              What the systems above are made of.
+        {/* Toolkit */}
+        <div className="mt-24 lg:mt-32">
+          <Reveal>
+            <p className="smallcaps flex items-center gap-4">
+              <span aria-hidden className="h-px w-10 bg-gold/50" />
+              The toolkit — what the systems above are made of
             </p>
           </Reveal>
-          <Reveal delay={0.05} className="lg:col-span-9">
-            <table className="w-full border-collapse text-left">
-              <thead className="sr-only">
-                <tr>
-                  <th scope="col">Area</th>
-                  <th scope="col">Tools</th>
-                </tr>
-              </thead>
-              <tbody>
-                {skills.map((g, i) => (
-                  <tr key={g.group} className="block border-t border-rule py-4 last:border-b sm:table-row sm:py-0">
-                    <th
-                      scope="row"
-                      className="block pb-1.5 align-top font-mono text-[12px] font-normal whitespace-nowrap text-subtle sm:table-cell sm:w-0 sm:py-4 sm:pr-6"
-                    >
-                      {String(i + 1).padStart(2, "0")}&nbsp;&nbsp;{g.group}
-                    </th>
-                    <td className="block text-[16px] leading-relaxed sm:table-cell sm:py-4">
-                      {g.items.map((item, j) => (
-                        <span key={item}>
-                          {item}
-                          {/* trailing space gives the line somewhere to break */}
-                          {j < g.items.length - 1 && (
-                            <>
-                              <span aria-hidden className="ml-2 text-rule-strong">
-                                /
-                              </span>{" "}
-                            </>
-                          )}
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {skills.map((g, i) => (
+              <Reveal key={g.group} delay={(i % 3) * 0.07} className="glass rounded-[20px] p-6 sm:p-7">
+                <p className="flex items-baseline justify-between gap-3">
+                  <span className="display text-[1.65rem] leading-none">{g.group}</span>
+                  <span className="font-mono text-[11px] text-subtle">{String(g.items.length).padStart(2, "0")}</span>
+                </p>
+                <div aria-hidden className="rule-gold mt-4 opacity-60" />
+                <ul className="mt-4 flex flex-wrap gap-x-1 gap-y-1.5 text-[15px] leading-relaxed text-muted">
+                  {g.items.map((item, j) => (
+                    <li key={item}>
+                      {item}
+                      {j < g.items.length - 1 && (
+                        <span aria-hidden className="mx-1.5 text-gold/60">
+                          ·
                         </span>
-                      ))}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Reveal>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>

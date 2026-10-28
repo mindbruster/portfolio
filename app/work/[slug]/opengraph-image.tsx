@@ -15,7 +15,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   const project = projects[index];
 
   return ogCard({
-    eyebrow: `Case study ${String(index + 1).padStart(2, "0")} · ${project?.layer ?? ""}`,
+    eyebrow: `Case study N° ${String(index + 1).padStart(2, "0")}`,
     children: <span>{project?.name ?? "Case study"}</span>,
     subtitle: project?.tagline,
   });

@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HashScroll from "@/components/HashScroll";
+import SmoothScroll from "@/components/SmoothScroll";
 import { profile } from "@/lib/content";
 
 const geist = Geist({
@@ -18,11 +19,11 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const instrument = Instrument_Serif({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
-  variable: "--font-instrument",
+  variable: "--font-cormorant",
   display: "swap",
 });
 
@@ -62,15 +63,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f1efe8" },
-    { media: "(prefers-color-scheme: dark)", color: "#12110e" },
-  ],
+  themeColor: "#08090c",
 };
-
-/* Runs before first paint so a saved theme never flashes the wrong one.
-   With nothing saved, the CSS follows the system setting on its own. */
-const themeScript = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
 
 export default function RootLayout({
   children,
@@ -78,27 +72,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${geist.variable} ${geistMono.variable} ${instrument.variable}`}
-    >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${cormorant.variable}`}>
       <body>
         {/* Skip link — first tab stop for keyboard and screen-reader users */}
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-paper"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-sm focus:text-ink"
         >
           Skip to content
         </a>
+        <SmoothScroll />
         <HashScroll />
         <Header />
         {children}
         <Footer />
-        <div aria-hidden className="grain pointer-events-none fixed inset-0 z-[70]" />
+        <div aria-hidden className="grain pointer-events-none fixed inset-0 z-[70] opacity-70" />
       </body>
     </html>
   );

@@ -17,7 +17,7 @@ export default function CopyEmail({ email }: { email: string }) {
   };
 
   return (
-    <button type="button" onClick={copy} className="btn" aria-live="polite">
+    <button type="button" onClick={copy} className="btn-ghost !py-3.5" aria-live="polite">
       {copied ? <Check className="size-3.5" aria-hidden /> : <Copy className="size-3.5" aria-hidden />}
       {copied ? "Copied" : "Copy address"}
     </button>

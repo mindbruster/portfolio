@@ -20,6 +20,8 @@ export const profile = {
   timeZone: "Asia/Karachi",
   /** The site's thesis — the hero headline. */
   thesis: "The model is the easy part.",
+  /** Set large in About — the line the whole site argues. */
+  quote: "It is rarely the model. It is what surrounds it.",
   /** Hero lede: who, and what "everything around it" means. */
   lede:
     "I'm Abdul Aziz, an AI engineer in Lahore. I build what surrounds the model — safety filters, retrieval, routing, memory, metering and ledgers — and seven of those systems are in production.",
@@ -695,7 +697,10 @@ export const education = {
   period: "Aug 2021 — Jul 2025",
 };
 
-/** Home-page sections in reading order. The number is the § marker. */
+/** Section numbering, set in roman like a bound document. */
+export const numerals = ["I", "II", "III", "IV", "V", "VI"] as const;
+
+/** Home-page sections in reading order. */
 export const nav = [
   { href: "/#work", id: "work", label: "Work" },
   { href: "/#about", id: "about", label: "About" },
